@@ -63,17 +63,18 @@ const Login = ({navigation}) => {
       userId: id,
       password: pwd,
     };
-    LoginApi()
-      .post(info.apiList.login, data)
-      .then((res) => {
-        storeToken(res.data);
-        navigation.navigate('Home');
-      })
-      .catch((error) => {
-        console.error(error);
-        setPwd('');
-        setPermissionState(false);
-      });
+    // LoginApi()
+    //   .post(info.apiList.login, data)
+    //   .then((res) => {
+    //     storeToken(res.data);
+    //     navigation.navigate('Home');
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //     setPwd('');
+    //     setPermissionState(false);
+    //   });
+    navigation.navigate('Home');
   }
 
   return (
