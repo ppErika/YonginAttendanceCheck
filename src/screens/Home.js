@@ -173,7 +173,7 @@ const Home = ({navigation}) => {
 
   return (
     <Container>
-      <Text
+      {/* <Text
         style={{
           color: Colors.activeGreen,
           fontFamily: Fonts.spoqaBold,
@@ -181,7 +181,7 @@ const Home = ({navigation}) => {
           margin: 15,
         }}>
         강의 목록
-      </Text>
+      </Text> */}
       <SemesterTab width={width}>
         {SemesterItems.map((item, i) => (
           <SemesterButton

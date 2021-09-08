@@ -20,7 +20,7 @@ const Box = styled.View`
 const Detail = ({navigation, route, item}) => {
   return (
     <Container>
-      <Text
+      {/* <Text
         style={{
           color: Colors.activeGreen,
           fontFamily: Fonts.spoqaBold,
@@ -28,7 +28,7 @@ const Detail = ({navigation, route, item}) => {
           margin: 15,
         }}>
         {route.params.item.name}
-      </Text>
+      </Text> */}
       <SelectedLecture item={route.params.item} />
       <Box>
         <GreenButton

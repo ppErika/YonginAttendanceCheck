@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {Login, Home, Detail, AxiosSample} from '../screens';
 import {Colors} from '../assets/colors/Colors';
+import Header from '../components/Header';
 
 const Stack = createStackNavigator();
 
@@ -12,7 +13,7 @@ const StackNav = ({}) => {
       <Stack.Navigator
         initialRouteName="Login"
         screenOptions={({route, navigation}) => ({
-          headerShown: false,
+          headerShown: true,
           ...TransitionPresets.SlideFromRightAndroid,
           cardStyle: {backgroundColor: Colors.backgroundGray},
         })}>
@@ -21,9 +22,48 @@ const StackNav = ({}) => {
           component={Login}
           options={{headerShown: false}}
         />
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Detail" component={Detail} />
-        <Stack.Screen name="AxiosSample" component={AxiosSample} />
+
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={({route, navigation}) => ({
+            headerStyle: {
+              backgroundColor: Colors.backgroundGray,
+              elevation: 0, // remove shadow on Android
+              shadowOpacity: 0, // remove shadow on iOS
+            },
+            headerTitleAlign: 'center',
+            headerTitle: () => <Header title="강의 목록" />,
+            //headerLeft: null,
+          })}
+        />
+
+        <Stack.Screen
+          name="Detail"
+          component={Detail}
+          options={({route, navigation}) => ({
+            headerStyle: {
+              backgroundColor: Colors.backgroundGray,
+              elevation: 0,
+              shadowOpacity: 0,
+            },
+            headerTitleAlign: 'center',
+            headerTitle: () => <Header title={route.params.item.name} />,
+          })}
+        />
+
+        <Stack.Screen
+          name="AxiosSample"
+          component={AxiosSample}
+          options={({navigation, route}) => ({
+            headerStyle: {
+              backgroundColor: Colors.backgroundGray,
+            },
+            headerTitleAlign: 'center',
+            headerTitle: () => <Header title="테스트" />,
+            //headerLeft: null,
+          })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
