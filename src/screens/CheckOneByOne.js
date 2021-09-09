@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function CheckOneByOne({navigation, route, item}) {
+const CheckOneByOne = ({navigation, route, lectureName}) => {
   const width = useWindowDimensions().width;
   const [seq, setSeq] = useState(1); // 현재 번호
   const [quota, setQuota] = useState(45); // 총 인원
@@ -68,8 +68,7 @@ function CheckOneByOne({navigation, route, item}) {
             fontSize: 22,
             margin: 15,
           }}>
-          테스트
-          {/* {route.params.item.name} */}
+          {route.params.lectureName}
         </Text>
         <Progress.Bar
           progress={progress}
@@ -164,6 +163,6 @@ function CheckOneByOne({navigation, route, item}) {
       <SaveButton />
     </>
   );
-}
+};
 
 export default CheckOneByOne;

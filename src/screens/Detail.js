@@ -18,6 +18,7 @@ const ButtonBox = styled.View`
 `;
 
 const Detail = ({navigation, route, item}) => {
+  const lectureName = route.params.item.name;
   return (
     <Container>
       <Text
@@ -27,13 +28,13 @@ const Detail = ({navigation, route, item}) => {
           fontSize: 22,
           margin: 15,
         }}>
-        {route.params.item.name}
+        {lectureName}
       </Text>
       <SelectedLecture item={route.params.item} />
       <ButtonBox>
         <GreenButton
           title="한명씩 출석"
-          onPress={() => navigation.navigate('CheckOneByOne', {item})}
+          onPress={() => navigation.navigate('CheckOneByOne', {lectureName})}
         />
         <GreenButton
           title="리스트 출석"
