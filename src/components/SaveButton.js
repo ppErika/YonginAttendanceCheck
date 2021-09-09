@@ -13,8 +13,8 @@ const Container = styled.View`
 `;
 
 const Title = styled.Text`
-  font-size: 20px;
-  color: #ffffff;
+  font-size: 18px;
+  color: ${Colors.backgroundGray};
   text-align: center;
   font-family: ${Fonts.spoqaMedium};
 `;
