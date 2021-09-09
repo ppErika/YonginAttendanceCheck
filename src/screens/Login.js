@@ -54,7 +54,7 @@ const Login = ({navigation}) => {
   const [id, setId] = useState('');
   const [pwd, setPwd] = useState('');
   const [checked, setChecked] = useState(false);
-  // 로그인 실패 했을 때 화면 테스트를 위한 변수 (실패가 false)
+  //로그인 실패 했을 때 화면 테스트를 위한 변수 (실패가 false)
   const [permissionState, setPermissionState] = useState(true);
 
   //테스트용 ID:admin1111, PWD:pass
@@ -62,19 +62,20 @@ const Login = ({navigation}) => {
     const data = {
       userId: id,
       password: pwd,
+      userType: 1, //학생 1
     };
-    // LoginApi()
-    //   .post(info.apiList.login, data)
-    //   .then((res) => {
-    //     storeToken(res.data);
-    //     navigation.navigate('Home');
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //     setPwd('');
-    //     setPermissionState(false);
-    //   });
-    navigation.navigate('Home');
+    LoginApi()
+      .post(info.apiList.login, data)
+      .then((res) => {
+        storeToken(res.data);
+        navigation.navigate('Home');
+      })
+      .catch((error) => {
+        console.error(error);
+        setPwd('');
+        setPermissionState(false);
+      });
+    //navigation.navigate('Home');
   }
 
   return (
