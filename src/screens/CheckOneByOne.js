@@ -93,7 +93,8 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
           <TouchableOpacity
             onPress={() => {
               setSeq(seq - 1);
-            }}>
+            }}
+            hitSlop={{bottom: 60, top: 60, left: 15, right: 20}}>
             <Image
               source={require('../assets/icons/back-arrow.png')}
               style={styles.iconStyle}
@@ -137,7 +138,8 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
           <TouchableOpacity
             onPress={() => {
               setSeq(seq + 1);
-            }}>
+            }}
+            hitSlop={{bottom: 60, top: 60, left: 20, right: 15}}>
             <Image
               source={require('../assets/icons/next-arrow.png')}
               style={styles.iconStyle}
