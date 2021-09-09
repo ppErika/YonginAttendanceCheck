@@ -1,36 +1,146 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
-import {Text} from 'react-native';
-import {LinearProgress} from 'react-native-elements';
-// import {ProgressBar} from 'react-native-paper';
+import {
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
+import * as Progress from 'react-native-progress';
+import {Card} from 'react-native-elements';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
+import SaveButton from '../components/SaveButton';
 
 const Container = styled.View`
   align-items: center;
   padding-top: 20px;
 `;
 
+const Box = styled.View`
+  width: ${({width}) => width - 60}px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+`;
+
+const InfoBox = styled.View`
+  align-items: center;
+  flex-direction: column;
+`;
+
+const styles = StyleSheet.create({
+  iconStyle: {
+    width: 23,
+    height: 23,
+    margin: 0,
+    resizeMode: 'contain',
+  },
+  cardImageStyle: {
+    width: 221,
+    height: 269,
+    resizeMode: 'cover',
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+  },
+});
+
 function CheckOneByOne({navigation, route, item}) {
+  const width = useWindowDimensions().width;
+  const [seq, setSeq] = useState(1); // 현재 번호
+  const [quota, setQuota] = useState(45); // 총 인원
+  const progress = seq / quota;
   return (
-    <Container>
-      <Text
-        style={{
-          color: Colors.activeGreen,
-          fontFamily: Fonts.spoqaBold,
-          fontSize: 22,
-          margin: 15,
-        }}>
-        테스트
-        {/* {route.params.item.name} */}
-      </Text>
-      <LinearProgress
-        value={0.2}
-        color={Colors.inactiveGray}
-        trackColor={Colors.activeGreen}
-      />
-      {/* <ProgressBar progress={0.5} color={Colors.activeGreen} /> */}
-    </Container>
+    <>
+      <Container>
+        <Text
+          style={{
+            color: Colors.activeGreen,
+            fontFamily: Fonts.spoqaBold,
+            fontSize: 22,
+            margin: 15,
+          }}>
+          테스트
+          {/* {route.params.item.name} */}
+        </Text>
+        <Progress.Bar
+          progress={progress}
+          width={width}
+          height={7}
+          borderRadius={0}
+          borderWidth={0}
+          unfilledColor={Colors.inactiveGray}
+          color={Colors.activeGreen}
+        />
+        <Text
+          style={{
+            color: Colors.activeGreen,
+            fontFamily: Fonts.spoqaMedium,
+            fontSize: 16,
+            marginTop: 12,
+            marginBottom: 32,
+          }}>
+          {seq}/{quota}
+        </Text>
+        <Box width={width}>
+          <TouchableOpacity
+            onPress={() => {
+              setSeq(seq - 1);
+            }}>
+            <Image
+              source={require('../assets/icons/back-arrow.png')}
+              style={styles.iconStyle}
+            />
+          </TouchableOpacity>
+          <Card
+            containerStyle={{
+              width: 221,
+              heigth: 330,
+              borderRadius: 5,
+              padding: 0,
+              marginHorizontal: 38,
+              marginBottom: 49,
+            }}>
+            <Card.Image
+              source={require('../assets/3.jpg')}
+              style={styles.cardImageStyle}
+            />
+            <InfoBox>
+              <Text
+                style={{
+                  color: Colors.activeGreen,
+                  fontFamily: Fonts.spoqaBold,
+                  fontSize: 20,
+                  marginTop: 12,
+                  marginBottom: 5,
+                }}>
+                한은경
+              </Text>
+              <Text
+                style={{
+                  color: Colors.activeGreen,
+                  fontFamily: Fonts.spoqaMedium,
+                  fontSize: 16,
+                  marginBottom: 12,
+                }}>
+                201733031
+              </Text>
+            </InfoBox>
+          </Card>
+          <TouchableOpacity
+            onPress={() => {
+              setSeq(seq + 1);
+            }}>
+            <Image
+              source={require('../assets/icons/next-arrow.png')}
+              style={styles.iconStyle}
+            />
+          </TouchableOpacity>
+        </Box>
+      </Container>
+      <SaveButton />
+    </>
   );
 }
 
