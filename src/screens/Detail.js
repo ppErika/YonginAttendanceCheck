@@ -33,7 +33,7 @@ const Detail = ({navigation, route, item}) => {
       <Box>
         <GreenButton
           title="한명씩 출석"
-          onPress={() => navigation.navigate('AxiosSample')}
+          onPress={() => navigation.navigate('CheckOneByOne', {item})}
         />
         <GreenButton
           title="리스트 출석"

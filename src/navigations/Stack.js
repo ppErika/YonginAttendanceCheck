@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
-import {Login, Home, Detail, AxiosSample} from '../screens';
+import {Login, Home, Detail, AxiosSample, CheckOneByOne} from '../screens';
 import {Colors} from '../assets/colors/Colors';
 
 const Stack = createStackNavigator();
@@ -24,6 +24,7 @@ const StackNav = ({}) => {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Detail" component={Detail} />
         <Stack.Screen name="AxiosSample" component={AxiosSample} />
+        <Stack.Screen name="CheckOneByOne" component={CheckOneByOne} />
       </Stack.Navigator>
     </NavigationContainer>
   );
