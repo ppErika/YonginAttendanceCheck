@@ -12,6 +12,7 @@ import {Card} from 'react-native-elements';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
 import SaveButton from '../components/SaveButton';
+import AttendanceButton from '../components/AttendanceButton';
 
 const Container = styled.View`
   align-items: center;
@@ -28,6 +29,12 @@ const Box = styled.View`
 const InfoBox = styled.View`
   align-items: center;
   flex-direction: column;
+`;
+
+const ButtonBox = styled.View`
+  width: ${({width}) => width - 40}px;
+  align-items: center;
+  flex-direction: row;
 `;
 
 const styles = StyleSheet.create({
@@ -138,6 +145,21 @@ function CheckOneByOne({navigation, route, item}) {
             />
           </TouchableOpacity>
         </Box>
+        <ButtonBox width={width}>
+          <AttendanceButton
+            title="결석"
+            style={{marginRight: 8}}
+            onPress={() => {
+              setSeq(seq + 1);
+            }}
+          />
+          <AttendanceButton
+            title="출석"
+            onPress={() => {
+              setSeq(seq + 1);
+            }}
+          />
+        </ButtonBox>
       </Container>
       <SaveButton />
     </>
