@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
 
-// 활성 버튼 (초록색)
+// 학기 활성 버튼 (초록색)
 const ActiveContainer = styled.View`
   background-color: ${Colors.activeGreen};
   padding: 5px 13px;
@@ -19,7 +19,7 @@ const ActiveTitle = styled.Text`
   text-align: center;
 `;
 
-// 비활성 버튼
+// 학기 비활성 버튼 (회색)
 const InactiveContainer = styled.View`
   background-color: ${Colors.filterGray};
   padding: 5px 13px;

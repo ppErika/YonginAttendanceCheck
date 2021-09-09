@@ -18,12 +18,12 @@ const Container = styled.View`
   border-radius: 5px;
 `;
 
-const Box = styled.View`
+const InfoBox = styled.View`
   flex-direction: column;
   margin-bottom: 20px;
 `;
 
-const Box2 = styled.View`
+const TabBox = styled.View`
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
@@ -70,31 +70,31 @@ const SelectedLecture = ({item, onPress}) => {
   const width = useWindowDimensions().width;
   return (
     <Container width={width}>
-      <Box onPress={onPress}>
+      <InfoBox onPress={onPress}>
         <TimeText>{item.time}</TimeText>
         <TitleText>{item.name}</TitleText>
         <EtcText>{item.professor}</EtcText>
         <EtcText>{item.lectureRoom}</EtcText>
-      </Box>
+      </InfoBox>
       <View style={styles.lineStyle} />
       <TouchableOpacity onPress={onPress}>
-        <Box2>
+        <TabBox>
           <TitleText>주차별 출석현황</TitleText>
           <Image
-            source={require('../assets/icons/next.png')}
+            source={require('../assets/icons/next-arrow.png')}
             style={styles.iconStyle}
           />
-        </Box2>
+        </TabBox>
       </TouchableOpacity>
       <View style={styles.lineStyle} />
       <TouchableOpacity onPress={onPress}>
-        <Box2>
+        <TabBox>
           <TitleText>학생별 출석현황</TitleText>
           <Image
-            source={require('../assets/icons/next.png')}
+            source={require('../assets/icons/next-arrow.png')}
             style={styles.iconStyle}
           />
-        </Box2>
+        </TabBox>
       </TouchableOpacity>
     </Container>
   );

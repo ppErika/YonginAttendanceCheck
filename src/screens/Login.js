@@ -15,7 +15,7 @@ const Container = styled.View`
   padding-top: 17px;
 `;
 
-const Box = styled.View`
+const CautionBox = styled.View`
   width: ${({width}) => width - 40}px;
   justify-content: flex-start;
   align-items: center;
@@ -23,7 +23,7 @@ const Box = styled.View`
   margin-bottom: 41px;
 `;
 
-const Box2 = styled.View`
+const InputBundleBox = styled.View`
   margin-bottom: 61px;
 `;
 
@@ -94,15 +94,15 @@ const Login = ({navigation}) => {
               borderColor: Colors.absentRed,
             }}
           />
-          <Box width={width}>
+          <CautionBox width={width}>
             <Text
               style={{color: Colors.absentRed, fontFamily: Fonts.spoqaRegular}}>
               올바른 아이디 혹은 비밀번호가 아닙니다.
             </Text>
-          </Box>
+          </CautionBox>
         </>
       ) : (
-        <Box2>
+        <InputBundleBox>
           <Input
             placeholder="ID"
             returnkeyType="next"
@@ -117,7 +117,7 @@ const Login = ({navigation}) => {
             onChangeText={(text) => setPwd(text)}
             secureTextEntry={true}
           />
-        </Box2>
+        </InputBundleBox>
       )}
       {id.length > 0 && pwd.length > 0 ? (
         <GreenButton

@@ -10,7 +10,7 @@ const Container = styled.View`
   align-items: center;
   padding-top: 20px;
 `;
-const Box = styled.View`
+const ButtonBox = styled.View`
   justify-content: center;
   align-items: center;
   flex-direction: row;
@@ -30,7 +30,7 @@ const Detail = ({navigation, route, item}) => {
         {route.params.item.name}
       </Text>
       <SelectedLecture item={route.params.item} />
-      <Box>
+      <ButtonBox>
         <GreenButton
           title="한명씩 출석"
           onPress={() => navigation.navigate('CheckOneByOne', {item})}
@@ -43,7 +43,7 @@ const Detail = ({navigation, route, item}) => {
           title="출석 OTP 생성"
           onPress={() => navigation.navigate('Home')}
         />
-      </Box>
+      </ButtonBox>
     </Container>
   );
 };
