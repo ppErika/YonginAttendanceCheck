@@ -5,7 +5,6 @@ import Input from '../components/Input';
 import GreenButton from '../components/GreenButton';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
-import {CheckBox} from 'react-native-elements';
 import {info, LoginApi} from '../api/BaseApi';
 import {storeToken} from '../store/EncryptedStorage';
 
@@ -16,36 +15,24 @@ const Container = styled.View`
   padding-top: 17px;
 `;
 
-const Box = styled.View`
+const CautionBox = styled.View`
   width: ${({width}) => width - 40}px;
   justify-content: flex-start;
   align-items: center;
   flex-direction: row;
-  margin-bottom: 8px;
+  margin-bottom: 41px;
 `;
 
-const Box2 = styled.View`
-  width: ${({width}) => width - 40}px;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: row;
-  margin-bottom: 42px;
+const InputBundleBox = styled.View`
+  margin-bottom: 61px;
 `;
 
 const styles = StyleSheet.create({
   logo: {
     width: 103,
     height: 98,
-    marginTop: 65,
-    marginBottom: 42,
+    marginVertical: 65,
     resizeMode: 'contain',
-  },
-  checkboxContainer: {
-    backgroundColor: Colors.backgroundColor,
-    padding: 0,
-  },
-  checkboxText: {
-    color: Colors.activeGreen,
   },
 });
 
@@ -53,7 +40,6 @@ const Login = ({navigation}) => {
   const width = useWindowDimensions().width;
   const [id, setId] = useState('');
   const [pwd, setPwd] = useState('');
-  const [checked, setChecked] = useState(false);
   // 로그인 실패 했을 때 화면 테스트를 위한 변수 (실패가 false)
   const [permissionState, setPermissionState] = useState(true);
 
@@ -86,38 +72,37 @@ const Login = ({navigation}) => {
 
       {permissionState === false ? (
         <>
-          <Box width={width}>
+          <Input
+            placeholder="ID"
+            returnkeyType="next"
+            value={id}
+            onChangeText={(text) => setId(text)}
+            secureTextEntry={false}
+            style={{
+              borderWidth: 2,
+              borderColor: Colors.absentRed,
+            }}
+          />
+          <Input
+            placeholder="Password"
+            returnkeyType="done"
+            value={pwd}
+            onChangeText={(text) => setPwd(text)}
+            secureTextEntry={true}
+            style={{
+              borderWidth: 2,
+              borderColor: Colors.absentRed,
+            }}
+          />
+          <CautionBox width={width}>
             <Text
               style={{color: Colors.absentRed, fontFamily: Fonts.spoqaRegular}}>
               올바른 아이디 혹은 비밀번호가 아닙니다.
             </Text>
-          </Box>
-
-          <Input
-            placeholder="ID"
-            returnkeyType="next"
-            value={id}
-            onChangeText={(text) => setId(text)}
-            secureTextEntry={false}
-            style={{
-              borderWidth: 2,
-              borderColor: Colors.absentRed,
-            }}
-          />
-          <Input
-            placeholder="Password"
-            returnkeyType="done"
-            value={pwd}
-            onChangeText={(text) => setPwd(text)}
-            secureTextEntry={true}
-            style={{
-              borderWidth: 2,
-              borderColor: Colors.absentRed,
-            }}
-          />
+          </CautionBox>
         </>
       ) : (
-        <>
+        <InputBundleBox>
           <Input
             placeholder="ID"
             returnkeyType="next"
@@ -132,24 +117,8 @@ const Login = ({navigation}) => {
             onChangeText={(text) => setPwd(text)}
             secureTextEntry={true}
           />
-        </>
+        </InputBundleBox>
       )}
-      <Box2 width={width}>
-        <CheckBox
-          title="로그인 유지"
-          checked={checked ? true : false}
-          onPress={() => {
-            setChecked(!checked);
-          }}
-          checkedColor={Colors.activeGreen}
-          uncheckedColor={Colors.activeGreen}
-          checkedIcon="dot-circle-o"
-          uncheckedIcon="circle-o"
-          fontFamily={Fonts.spoqaRegular}
-          containerStyle={styles.checkboxContainer}
-          textStyle={styles.checkboxText}
-        />
-      </Box2>
       {id.length > 0 && pwd.length > 0 ? (
         <GreenButton
           title="로그인"

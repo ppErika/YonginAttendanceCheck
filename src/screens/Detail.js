@@ -10,7 +10,7 @@ const Container = styled.View`
   align-items: center;
   padding-top: 20px;
 `;
-const Box = styled.View`
+const ButtonBox = styled.View`
   justify-content: center;
   align-items: center;
   flex-direction: row;
@@ -18,6 +18,7 @@ const Box = styled.View`
 `;
 
 const Detail = ({navigation, route, item}) => {
+  const lectureName = route.params.item.name;
   return (
     <Container>
       <Text
@@ -27,13 +28,13 @@ const Detail = ({navigation, route, item}) => {
           fontSize: 22,
           margin: 15,
         }}>
-        {route.params.item.name}
+        {lectureName}
       </Text>
       <SelectedLecture item={route.params.item} />
-      <Box>
+      <ButtonBox>
         <GreenButton
           title="한명씩 출석"
-          onPress={() => navigation.navigate('AxiosSample')}
+          onPress={() => navigation.navigate('CheckOneByOne', {lectureName})}
         />
         <GreenButton
           title="리스트 출석"
@@ -43,7 +44,7 @@ const Detail = ({navigation, route, item}) => {
           title="출석 OTP 생성"
           onPress={() => navigation.navigate('Home')}
         />
-      </Box>
+      </ButtonBox>
     </Container>
   );
 };

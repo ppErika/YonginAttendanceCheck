@@ -4,22 +4,19 @@ import styled from 'styled-components/native';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
 
-// 로그인 Button
-const LoginContainer = styled.View`
-  width: ${({width}) => width - 40}px;
-  height: 55px;
+const AttendanceContainer = styled.View`
+  width: ${({width}) => ((width - 48) / 3) * 2}px;
+  height: 50px;
+  background-color: ${Colors.attendanceGreen};
   border-radius: 5px;
   justify-content: center;
   align-items: center;
 `;
 
-// 출석부르는 3가지 방식 Button
-const ButtonContainer = styled.View`
-  width: ${({width}) => (width - 60) / 3}px;
-  background-color: ${Colors.activeGreen};
-  height: 140px;
-  margin: 30px 5px 5px 5px;
-  padding: 24px;
+const AbsenctContainer = styled.View`
+  width: ${({width}) => (width - 48) / 3}px;
+  height: 50px;
+  background-color: ${Colors.absentRed};
   border-radius: 5px;
   justify-content: center;
   align-items: center;
@@ -32,21 +29,21 @@ const Title = styled.Text`
   font-family: ${Fonts.spoqaMedium};
 `;
 
-const GreenButton = ({title, style, onPress}) => {
+const AttendanceButton = ({title, style, onPress}) => {
   const width = useWindowDimensions().width;
-  return title === '로그인' ? (
+  return title === '출석' ? (
     <TouchableOpacity onPress={onPress}>
-      <LoginContainer width={width} style={style}>
+      <AttendanceContainer width={width} style={style}>
         <Title>{title}</Title>
-      </LoginContainer>
+      </AttendanceContainer>
     </TouchableOpacity>
   ) : (
     <TouchableOpacity onPress={onPress}>
-      <ButtonContainer width={width}>
+      <AbsenctContainer width={width} style={style}>
         <Title>{title}</Title>
-      </ButtonContainer>
+      </AbsenctContainer>
     </TouchableOpacity>
   );
 };
 
-export default GreenButton;
+export default AttendanceButton;
