@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {
+  Alert,
   Text,
   Image,
+  View,
   StyleSheet,
   TouchableOpacity,
   useWindowDimensions,
@@ -125,16 +127,20 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
           {seq}/{quota}
         </Text>
         <Box width={width}>
-          <TouchableOpacity
-            onPress={() => {
-              setSeq(seq - 1);
-            }}
-            hitSlop={{bottom: 60, top: 60, left: 15, right: 20}}>
-            <Image
-              source={require('../assets/icons/back-arrow.png')}
-              style={styles.iconStyle}
-            />
-          </TouchableOpacity>
+          {seq === 1 ? (
+            <View style={{width: 23, height: 23}} />
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                setSeq(seq - 1);
+              }}
+              hitSlop={{bottom: 60, top: 60, left: 15, right: 20}}>
+              <Image
+                source={require('../assets/icons/back-arrow.png')}
+                style={styles.iconStyle}
+              />
+            </TouchableOpacity>
+          )}
           <Card
             containerStyle={{
               width: 221,
@@ -170,30 +176,35 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
               </Text>
             </InfoBox>
           </Card>
-          <TouchableOpacity
-            onPress={() => {
-              setSeq(seq + 1);
-            }}
-            hitSlop={{bottom: 60, top: 60, left: 20, right: 15}}>
-            <Image
-              source={require('../assets/icons/next-arrow.png')}
-              style={styles.iconStyle}
-            />
-          </TouchableOpacity>
+
+          {seq === quota ? (
+            <View style={{width: 23, heigth: 23}} />
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                setSeq(seq + 1);
+              }}
+              hitSlop={{bottom: 60, top: 60, left: 20, right: 15}}>
+              <Image
+                source={require('../assets/icons/next-arrow.png')}
+                style={styles.iconStyle}
+              />
+            </TouchableOpacity>
+          )}
         </Box>
         <ButtonBox width={width}>
           <AttendanceButton
             title="결석"
             style={{marginRight: 8}}
             onPress={() => {
-              setSeq(seq + 1);
+              seq === quota ? null : setSeq(seq + 1);
               ChangeAbsentStates(seq - 1);
             }}
           />
           <AttendanceButton
             title="출석"
             onPress={() => {
-              setSeq(seq + 1);
+              seq === quota ? null : setSeq(seq + 1);
               ChangeAttendanceStates(seq - 1);
             }}
           />
