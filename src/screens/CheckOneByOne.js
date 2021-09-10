@@ -79,6 +79,20 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
   const [seq, setSeq] = useState(1); // 현재 번호
   const [quota, setQuota] = useState(studentItems.length); // 총 인원
   const progress = seq / quota;
+  const [states, setStates] = useState([0, 0, 0]);
+
+  function ChangeAttendanceStates(i) {
+    var arrayCopy = [...states];
+    arrayCopy[i] = 1;
+    setStates(arrayCopy);
+  }
+
+  function ChangeAbsentStates(i) {
+    var arrayCopy = [...states];
+    arrayCopy[i] = 0;
+    setStates(arrayCopy);
+  }
+
   return (
     <>
       <Container>
@@ -172,19 +186,25 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
                 style={{marginRight: 8}}
                 onPress={() => {
                   setSeq(seq + 1);
+                  ChangeAbsentStates(i);
                 }}
               />
               <AttendanceButton
                 title="출석"
                 onPress={() => {
                   setSeq(seq + 1);
+                  ChangeAttendanceStates(i);
                 }}
               />
             </ButtonBox>
           </>
         ))}
       </Container>
-      <SaveButton />
+      <SaveButton
+        onPress={() => {
+          console.log(states);
+        }}
+      />
     </>
   );
 };
