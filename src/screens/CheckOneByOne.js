@@ -124,81 +124,80 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
           }}>
           {seq}/{quota}
         </Text>
-        {studentItems.map((item, i) => (
-          <>
-            <Box width={width}>
-              <TouchableOpacity
-                onPress={() => {
-                  setSeq(seq - 1);
-                }}
-                hitSlop={{bottom: 60, top: 60, left: 15, right: 20}}>
-                <Image
-                  source={require('../assets/icons/back-arrow.png')}
-                  style={styles.iconStyle}
-                />
-              </TouchableOpacity>
-              <Card
-                containerStyle={{
-                  width: 221,
-                  heigth: 330,
-                  borderRadius: 5,
-                  padding: 0,
-                  marginHorizontal: 38,
-                  marginBottom: 49,
+        <Box width={width}>
+          <TouchableOpacity
+            onPress={() => {
+              setSeq(seq - 1);
+            }}
+            hitSlop={{bottom: 60, top: 60, left: 15, right: 20}}>
+            <Image
+              source={require('../assets/icons/back-arrow.png')}
+              style={styles.iconStyle}
+            />
+          </TouchableOpacity>
+          <Card
+            containerStyle={{
+              width: 221,
+              heigth: 330,
+              borderRadius: 5,
+              padding: 0,
+              marginHorizontal: 38,
+              marginBottom: 49,
+            }}>
+            <Card.Image
+              source={studentItems[seq - 1].photo}
+              style={styles.cardImageStyle}
+            />
+            <InfoBox>
+              <Text
+                style={{
+                  color: Colors.activeGreen,
+                  fontFamily: Fonts.spoqaBold,
+                  fontSize: 20,
+                  marginTop: 12,
+                  marginBottom: 5,
                 }}>
-                <Card.Image source={item.photo} style={styles.cardImageStyle} />
-                <InfoBox>
-                  <Text
-                    style={{
-                      color: Colors.activeGreen,
-                      fontFamily: Fonts.spoqaBold,
-                      fontSize: 20,
-                      marginTop: 12,
-                      marginBottom: 5,
-                    }}>
-                    {item.name}
-                  </Text>
-                  <Text
-                    style={{
-                      color: Colors.activeGreen,
-                      fontFamily: Fonts.spoqaMedium,
-                      fontSize: 16,
-                      marginBottom: 12,
-                    }}>
-                    {item.code}
-                  </Text>
-                </InfoBox>
-              </Card>
-              <TouchableOpacity
-                onPress={() => {
-                  setSeq(seq + 1);
-                }}
-                hitSlop={{bottom: 60, top: 60, left: 20, right: 15}}>
-                <Image
-                  source={require('../assets/icons/next-arrow.png')}
-                  style={styles.iconStyle}
-                />
-              </TouchableOpacity>
-            </Box>
-            <ButtonBox width={width}>
-              <AttendanceButton
-                title="결석"
-                style={{marginRight: 8}}
-                onPress={() => {
-                  setSeq(seq + 1);
-                  ChangeAbsentStates(i);
-                }}
-              />
-              <AttendanceButton
-                title="출석"
-                onPress={() => {
-                  setSeq(seq + 1);
-                  ChangeAttendanceStates(i);
-                }}
-              />
-            </ButtonBox>
-          </>
-        ))}
+                {studentItems[seq - 1].name}
+              </Text>
+              <Text
+                style={{
+                  color: Colors.activeGreen,
+                  fontFamily: Fonts.spoqaMedium,
+                  fontSize: 16,
+                  marginBottom: 12,
+                }}>
+                {studentItems[seq - 1].code}
+              </Text>
+            </InfoBox>
+          </Card>
+          <TouchableOpacity
+            onPress={() => {
+              setSeq(seq + 1);
+            }}
+            hitSlop={{bottom: 60, top: 60, left: 20, right: 15}}>
+            <Image
+              source={require('../assets/icons/next-arrow.png')}
+              style={styles.iconStyle}
+            />
+          </TouchableOpacity>
+        </Box>
+        <ButtonBox width={width}>
+          <AttendanceButton
+            title="결석"
+            style={{marginRight: 8}}
+            onPress={() => {
+              setSeq(seq + 1);
+              ChangeAbsentStates(seq - 1);
+            }}
+          />
+          <AttendanceButton
+            title="출석"
+            onPress={() => {
+              setSeq(seq + 1);
+              ChangeAttendanceStates(seq - 1);
+            }}
+          />
+        </ButtonBox>
       </Container>
       <SaveButton
         onPress={() => {
