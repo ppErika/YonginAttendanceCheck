@@ -116,15 +116,6 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
   return (
     <>
       <Container>
-        {/* <Text
-          style={{
-            color: Colors.activeGreen,
-            fontFamily: Fonts.spoqaBold,
-            fontSize: 22,
-            margin: 15,
-          }}>
-          {route.params.lectureName}
-        </Text> */}
         <Progress.Bar
           progress={progress}
           width={width}

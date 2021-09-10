@@ -172,15 +172,6 @@ const Home = ({navigation}) => {
 
   return (
     <Container>
-      {/* <Text
-        style={{
-          color: Colors.activeGreen,
-          fontFamily: Fonts.spoqaBold,
-          fontSize: 22,
-          margin: 15,
-        }}>
-        강의 목록
-      </Text> */}
       <SemesterTab width={width}>
         {SemesterItems.map((item, i) => (
           <SemesterButton

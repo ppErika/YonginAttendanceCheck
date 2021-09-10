@@ -34,7 +34,7 @@ const StackNav = ({}) => {
             },
             headerTitleAlign: 'center',
             headerTitle: () => <Header title="강의 목록" />,
-            //headerLeft: null,
+            // headerLeft: null,
           })}
         />
 

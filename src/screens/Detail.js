@@ -21,17 +21,6 @@ const Detail = ({navigation, route, item}) => {
   const lectureName = route.params.item.name;
   return (
     <Container>
-      {/* <Text
-        style={{
-          color: Colors.activeGreen,
-          fontFamily: Fonts.spoqaBold,
-          fontSize: 22,
-          margin: 15,
-        }}>
-        {route.params.item.name}
-      </Text>
-        {lectureName}
-      </Text>*/}
       <SelectedLecture item={route.params.item} />
       <ButtonBox>
         <GreenButton
