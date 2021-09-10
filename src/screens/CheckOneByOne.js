@@ -49,13 +49,31 @@ const studentItems = [
   {
     id: 2,
     code: 200000002,
-    name: '박땡땡',
+    name: '이땡땡',
     photo: require('../assets/2.jpg'),
   },
   {
     id: 3,
     code: 200000003,
-    name: '이땡땡',
+    name: '박땡땡',
+    photo: require('../assets/3.jpg'),
+  },
+  {
+    id: 4,
+    code: 200000004,
+    name: '최땡땡',
+    photo: require('../assets/1.jpg'),
+  },
+  {
+    id: 5,
+    code: 200000005,
+    name: '정땡땡',
+    photo: require('../assets/2.jpg'),
+  },
+  {
+    id: 6,
+    code: 200000006,
+    name: '한땡땡',
     photo: require('../assets/3.jpg'),
   },
 ];
@@ -81,7 +99,7 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
   const [seq, setSeq] = useState(1); // 현재 번호
   const [quota, setQuota] = useState(studentItems.length); // 총 인원
   const progress = seq / quota;
-  const [states, setStates] = useState([0, 0, 0]);
+  const [states, setStates] = useState([0, 0, 0, 0, 0, 0]);
 
   function ChangeAttendanceStates(i) {
     var arrayCopy = [...states];
@@ -212,7 +230,7 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
       </Container>
       <SaveButton
         onPress={() => {
-          console.log(states);
+          Alert.alert('출석이 저장되었습니다.' + states);
         }}
       />
     </>
