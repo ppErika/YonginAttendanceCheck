@@ -145,7 +145,7 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
               }}
               hitSlop={{bottom: 60, top: 60, left: 15, right: 20}}>
               <Image
-                source={require('../assets/icons/back-arrow.png')}
+                source={require('../assets/icons/previous-arrow.png')}
                 style={styles.iconStyle}
               />
             </TouchableOpacity>

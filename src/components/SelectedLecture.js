@@ -81,7 +81,7 @@ const SelectedLecture = ({item, onPress}) => {
         <TabBox>
           <TitleText>주차별 출석현황</TitleText>
           <Image
-            source={require('../assets/icons/next-arrow.png')}
+            source={require('../assets/icons/next-thin.png')}
             style={styles.iconStyle}
           />
         </TabBox>
@@ -91,7 +91,7 @@ const SelectedLecture = ({item, onPress}) => {
         <TabBox>
           <TitleText>학생별 출석현황</TitleText>
           <Image
-            source={require('../assets/icons/next-arrow.png')}
+            source={require('../assets/icons/next-thin.png')}
             style={styles.iconStyle}
           />
         </TabBox>
