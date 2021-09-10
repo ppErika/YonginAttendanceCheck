@@ -1,7 +1,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
-import {Login, Home, Detail, AxiosSample} from '../screens';
+import {Login, Home, Detail, AxiosSample, CheckOneByOne} from '../screens';
 import {Colors} from '../assets/colors/Colors';
 import Header from '../components/Header';
 
@@ -63,6 +63,20 @@ const StackNav = ({}) => {
             },
             headerTitleAlign: 'center',
             headerTitle: () => <Header title="api TEST" />,
+            //headerLeft: null,
+          })}
+        />
+        <Stack.Screen
+          name="CheckOneByOne"
+          component={CheckOneByOne}
+          options={({route, navigation}) => ({
+            headerStyle: {
+              backgroundColor: Colors.backgroundGray,
+              elevation: 0,
+              shadowOpacity: 0,
+            },
+            headerTitleAlign: 'center',
+            headerTitle: () => <Header title={route.params.lectureName} />,
             //headerLeft: null,
           })}
         />

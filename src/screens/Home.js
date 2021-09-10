@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
 import {Text, ScrollView, useWindowDimensions} from 'react-native';
 import Lecture from '../components/Lecture';
-import DetailedLecture from '../components/DetailedLecture';
 import SemesterButton from '../components/SemesterButton';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
@@ -193,25 +192,13 @@ const Home = ({navigation}) => {
         ))}
       </SemesterTab>
       <ScrollView style={{height: _height - 130}}>
-        {selectedSemester.map((item) =>
-          item.time === '월 09:25 - 12:30' ? (
-            <DetailedLecture
-              key={item.id}
-              item={item}
-              onPress={() =>
-                navigation.navigate('Detail', {
-                  item,
-                })
-              }
-            />
-          ) : (
-            <Lecture
-              key={item.id}
-              item={item}
-              onPress={() => navigation.navigate('Detail', {item})}
-            />
-          ),
-        )}
+        {selectedSemester.map((item) => (
+          <Lecture
+            key={item.id}
+            item={item}
+            onPress={() => navigation.navigate('Detail', {item})}
+          />
+        ))}
       </ScrollView>
     </Container>
   );

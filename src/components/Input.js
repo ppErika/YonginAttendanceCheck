@@ -10,7 +10,7 @@ const StyledInput = styled.TextInput.attrs({
 })`
   width: ${({width}) => width - 40}px;
   height: 54px;
-  margin-bottom: 8px;
+  margin-bottom: 11px;
   padding: 10px;
   background-color: #ffffff;
   border: 2px
