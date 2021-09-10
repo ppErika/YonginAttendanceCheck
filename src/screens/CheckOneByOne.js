@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components/native';
 import {
   Alert,
@@ -101,17 +101,31 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
   const progress = seq / quota;
   const [states, setStates] = useState([0, 0, 0, 0, 0, 0]);
 
+  // 출석으로 체크 (1)
   function ChangeAttendanceStates(i) {
     var arrayCopy = [...states];
     arrayCopy[i] = 1;
     setStates(arrayCopy);
   }
 
+  // 결석으로 체크 (0)
   function ChangeAbsentStates(i) {
     var arrayCopy = [...states];
     arrayCopy[i] = 0;
     setStates(arrayCopy);
   }
+
+  // quota 만큼 states 배열길이 늘려주기
+  function AddStates() {
+    var arrayCopy = [...states];
+    studentItems.map(arrayCopy.unshift(0));
+    setStates(arrayCopy);
+  }
+
+  // 마운트 시에 AddStates부르기 (미동작)
+  // useEffect(() => {
+  //   AddStates();
+  // }, []);
 
   return (
     <>
@@ -219,11 +233,16 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
           />
         </ButtonBox>
       </Container>
-      <SaveButton
-        onPress={() => {
-          Alert.alert('출석이 저장되었습니다.' + states);
-        }}
-      />
+      {seq === quota ? (
+        <SaveButton
+          style={{backgroundColor: Colors.activeGreen}}
+          onPress={() => {
+            Alert.alert('출석이 저장되었습니다.' + states);
+          }}
+        />
+      ) : (
+        <SaveButton style={{backgroundColor: Colors.inactiveGray}} />
+      )}
     </>
   );
 };
