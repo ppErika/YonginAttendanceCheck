@@ -4,13 +4,10 @@ import styled from 'styled-components/native';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
 
-// 출석부르는 3가지 방식 Button
-const ButtonContainer = styled.View`
-  width: ${({width}) => (width - 60) / 3}px;
-  background-color: ${Colors.activeGreen};
-  height: 140px;
-  margin: 30px 5px 5px 5px;
-  padding: 24px;
+// 로그인 Button
+const LoginContainer = styled.View`
+  width: ${({width}) => width - 40}px;
+  height: 55px;
   border-radius: 5px;
   justify-content: center;
   align-items: center;
@@ -23,15 +20,15 @@ const Title = styled.Text`
   font-family: ${Fonts.spoqaMedium};
 `;
 
-const GreenButton = ({title, onPress}) => {
+const LoginButton = ({style, onPress}) => {
   const width = useWindowDimensions().width;
   return (
     <TouchableOpacity onPress={onPress}>
-      <ButtonContainer width={width}>
-        <Title>{title}</Title>
-      </ButtonContainer>
+      <LoginContainer width={width} style={style}>
+        <Title>로그인</Title>
+      </LoginContainer>
     </TouchableOpacity>
   );
 };
 
-export default GreenButton;
+export default LoginButton;

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components/native';
 import {Image, StyleSheet, Text, useWindowDimensions} from 'react-native';
 import Input from '../components/Input';
-import GreenButton from '../components/GreenButton';
+import LoginButton from '../components/LoginButton';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
 import {info, LoginApi} from '../api/BaseApi';
@@ -121,16 +121,12 @@ const Login = ({navigation}) => {
         </InputBundleBox>
       )}
       {id.length > 0 && pwd.length > 0 ? (
-        <GreenButton
-          title="로그인"
+        <LoginButton
           style={{backgroundColor: Colors.activeGreen}}
           onPress={login}
         />
       ) : (
-        <GreenButton
-          title="로그인"
-          style={{backgroundColor: Colors.inactiveGray}}
-        />
+        <LoginButton style={{backgroundColor: Colors.inactiveGray}} />
       )}
     </Container>
   );
