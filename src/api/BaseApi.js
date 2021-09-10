@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getToken} from '../store/EncryptedStorage';
+import {getToken, storeToken} from '../store/EncryptedStorage';
 
 export const info = {
   //backend url
@@ -8,6 +8,7 @@ export const info = {
   apiList: {
     login: '/api/auth/login',
     getLecture: '/api/course',
+    refresh: '/api/auth/token',
   },
 };
 
@@ -43,4 +44,28 @@ export function LoginApi() {
     },
   });
   return api;
+}
+
+/**
+ * 백엔드와 통신하여 새로운 토큰을 받아오는 함수
+ * 토큰을 받아서 저장한 뒤 리프레시 전에 호출했던 함수를 다시 호출한다.
+ */
+export async function Refresh(func) {
+  let data = await getToken();
+  const api = axios.create({
+    baseURL: info.backendUrl,
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+    },
+  });
+  api
+    .post(info.apiList.refresh, JSON.parse(data).token)
+    .then(async (res) => {
+      await storeToken(res.data);
+      func();
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }

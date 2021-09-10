@@ -55,12 +55,14 @@ const StackNav = ({}) => {
         <Stack.Screen
           name="AxiosSample"
           component={AxiosSample}
-          options={({navigation, route}) => ({
+          options={({route, navigation}) => ({
             headerStyle: {
               backgroundColor: Colors.backgroundGray,
+              elevation: 0,
+              shadowOpacity: 0,
             },
             headerTitleAlign: 'center',
-            headerTitle: () => <Header title="테스트" />,
+            headerTitle: () => <Header title="api TEST" />,
             //headerLeft: null,
           })}
         />
