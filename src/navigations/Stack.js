@@ -4,6 +4,7 @@ import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {Login, Home, Detail, AxiosSample, CheckOneByOne} from '../screens';
 import {Colors} from '../assets/colors/Colors';
 import Header from '../components/Header';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const Stack = createStackNavigator();
 
@@ -63,6 +64,13 @@ const StackNav = ({}) => {
             },
             headerTitleAlign: 'center',
             headerTitle: () => <Header title="api TEST" />,
+            headerRight: () => (
+              <Icon
+                name="menu"
+                size={35}
+                onPress={() => navigation.navigate('Home')}
+              />
+            ),
             //headerLeft: null,
           })}
         />
