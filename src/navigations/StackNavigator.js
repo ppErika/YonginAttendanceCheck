@@ -33,6 +33,13 @@ const StackNavigator = () => {
           },
           headerTitleAlign: 'center',
           headerTitle: () => <Header title="강의 목록" />,
+          headerRight: () => (
+            <Icon
+              name="menu"
+              size={35}
+              onPress={() => navigation.openDrawer()}
+            />
+          ),
           // headerLeft: null,
         })}
       />
@@ -48,6 +55,13 @@ const StackNavigator = () => {
           },
           headerTitleAlign: 'center',
           headerTitle: () => <Header title={route.params.item.name} />,
+          headerRight: () => (
+            <Icon
+              name="menu"
+              size={35}
+              onPress={() => navigation.openDrawer()}
+            />
+          ),
         })}
       />
 
@@ -66,10 +80,9 @@ const StackNavigator = () => {
             <Icon
               name="menu"
               size={35}
-              onPress={() => navigation.navigate('Home')}
+              onPress={() => navigation.openDrawer()}
             />
           ),
-          //headerLeft: null,
         })}
       />
       <Stack.Screen
@@ -83,7 +96,13 @@ const StackNavigator = () => {
           },
           headerTitleAlign: 'center',
           headerTitle: () => <Header title={route.params.lectureName} />,
-          //headerLeft: null,
+          headerRight: () => (
+            <Icon
+              name="menu"
+              size={35}
+              onPress={() => navigation.openDrawer()}
+            />
+          ),
         })}
       />
     </Stack.Navigator>
