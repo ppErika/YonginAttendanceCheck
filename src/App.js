@@ -1,7 +1,14 @@
 import React from 'react';
-import StackNav from './navigations/Stack';
 import 'react-native-gesture-handler';
+import {NavigationContainer} from '@react-navigation/native';
+import DrawerNavigator from './navigations/DrawerNavigator';
 
-export default function App() {
-  return <StackNav />;
-}
+const App = () => {
+  return (
+    <NavigationContainer>
+      <DrawerNavigator />
+    </NavigationContainer>
+  );
+};
+
+export default App;
