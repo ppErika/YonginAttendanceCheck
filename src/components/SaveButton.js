@@ -18,14 +18,14 @@ const Title = styled.Text`
   font-family: ${Fonts.spoqaMedium};
 `;
 
-const SaveButton = ({style, onPress}) => {
+const SaveButton = ({title, style, onPress}) => {
   const width = useWindowDimensions().width;
   return (
     <View style={{flex: 1}}>
       <View style={{position: 'absolute', left: 0, bottom: 0}}>
         <TouchableOpacity onPress={onPress}>
           <Container width={width} style={style}>
-            <Title>저장하기</Title>
+            <Title>{title}</Title>
           </Container>
         </TouchableOpacity>
       </View>

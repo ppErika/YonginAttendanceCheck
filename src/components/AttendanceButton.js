@@ -5,7 +5,7 @@ import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
 
 const AttendanceContainer = styled.View`
-  width: ${({width}) => ((width - 48) / 3) * 2}px;
+  width: ${({width}) => (width - 48) / 2}px;
   height: 50px;
   background-color: ${Colors.attendanceGreen};
   border-radius: 5px;
@@ -14,9 +14,9 @@ const AttendanceContainer = styled.View`
 `;
 
 const AbsenctContainer = styled.View`
-  width: ${({width}) => (width - 48) / 3}px;
+  width: ${({width}) => (width - 48) / 2}px;
   height: 50px;
-  background-color: ${Colors.absentRed};
+  background-color: ${Colors.inactiveGray};
   border-radius: 5px;
   justify-content: center;
   align-items: center;
@@ -31,6 +31,7 @@ const Title = styled.Text`
 
 const AttendanceButton = ({title, style, onPress}) => {
   const width = useWindowDimensions().width;
+
   return title === '출석' ? (
     <TouchableOpacity onPress={onPress}>
       <AttendanceContainer width={width} style={style}>

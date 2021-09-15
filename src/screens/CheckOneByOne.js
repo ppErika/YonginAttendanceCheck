@@ -235,13 +235,17 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
       </Container>
       {seq === quota ? (
         <SaveButton
+          title="완료하기"
           style={{backgroundColor: Colors.activeGreen}}
           onPress={() => {
             Alert.alert('출석이 저장되었습니다.' + states);
           }}
         />
       ) : (
-        <SaveButton style={{backgroundColor: Colors.inactiveGray}} />
+        <SaveButton
+          title="완료하기"
+          style={{backgroundColor: Colors.inactiveGray}}
+        />
       )}
     </>
   );
