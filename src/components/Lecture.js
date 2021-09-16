@@ -42,9 +42,9 @@ const EtcText = styled.Text`
   margin-top: 7px;
 `;
 
-const Lecture = ({item, onPress}) => {
+const Lecture = ({item, seq, onPress}) => {
   const width = useWindowDimensions().width;
-  return item.courses.starttime === '09:25' ? (
+  return seq === 1 ? (
     <TouchableOpacity onPress={onPress}>
       <DetailInfoContainer width={width}>
         <TimeText>

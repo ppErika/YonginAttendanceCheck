@@ -140,6 +140,7 @@ const Home = ({navigation}) => {
   const [semesterBtnState, setSemesterBtnState] = useState([true, false]);
   const [selectedSemester, setSelectedSemester] = useState(classItems1);
   const [classItems, setClassItems] = useState([]);
+  let seq = 1; //lecture에 보내는 배열의 순서
 
   function changeSemesterBtn() {
     var arrayCopy = [...semesterBtnState];
@@ -190,6 +191,7 @@ const Home = ({navigation}) => {
           <Lecture
             key={item.courses.courseId}
             item={item}
+            seq={seq++}
             onPress={() => navigation.navigate('Detail', {item})}
           />
         ))}
