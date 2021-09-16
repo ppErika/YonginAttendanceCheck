@@ -6,6 +6,7 @@ import SemesterButton from '../components/SemesterButton';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
 import {info, Api} from '../api/BaseApi';
+import {ErrorHandler} from '../api/ErrorHandler';
 
 const Container = styled.View`
   align-items: center;
@@ -138,6 +139,7 @@ const Home = ({navigation}) => {
   const _height = useWindowDimensions().height;
   const [semesterBtnState, setSemesterBtnState] = useState([true, false]);
   const [selectedSemester, setSelectedSemester] = useState(classItems1);
+  const [classItems, setClassItems] = useState([]);
 
   function changeSemesterBtn() {
     var arrayCopy = [...semesterBtnState];
@@ -156,19 +158,20 @@ const Home = ({navigation}) => {
     api
       .get(info.apiList.getLecture)
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
+        setClassItems(res.data);
         //스테이트에 강의정보를 저장하여 사용
         //지금은 백엔드로부터 return오는 데이터가 프론트 양식과 맞지 않아서 적용 안함
       })
       .catch((error) => {
-        console.error(error);
+        ErrorHandler(error, getLecture);
       });
   }
 
   //컴포넌트를 처음 로딩할 때 호출
   useEffect(() => {
     getLecture();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container>
@@ -183,9 +186,9 @@ const Home = ({navigation}) => {
         ))}
       </SemesterTab>
       <ScrollView style={{height: _height - 130}}>
-        {selectedSemester.map((item) => (
+        {classItems.map((item) => (
           <Lecture
-            key={item.id}
+            key={item.courses.courseId}
             item={item}
             onPress={() => navigation.navigate('Detail', {item})}
           />

@@ -44,20 +44,31 @@ const EtcText = styled.Text`
 
 const Lecture = ({item, onPress}) => {
   const width = useWindowDimensions().width;
-  return item.time === '월 09:25 - 12:30' ? (
+  return item.courses.starttime === '09:25' ? (
     <TouchableOpacity onPress={onPress}>
       <DetailInfoContainer width={width}>
-        <TimeText>{item.time}</TimeText>
-        <TitleText>{item.name}</TitleText>
-        <EtcText>{item.professor}</EtcText>
-        <EtcText>{item.lectureRoom}</EtcText>
+        <TimeText>
+          {item.courses.daynm} {item.courses.starttime} ~ {item.courses.endtime}
+        </TimeText>
+        <TitleText>{item.courses.courseName}</TitleText>
+        <EtcText>
+          {Object.keys(item.courseOwners).length === 0
+            ? '교수 정보가 없습니다.'
+            : item.courseOwners[0].userName + ' 교수'}
+          {item.courseOwners.userName}
+        </EtcText>
+        <EtcText>
+          {item.courses.roomnm}, {item.courses.grade}학점
+        </EtcText>
       </DetailInfoContainer>
     </TouchableOpacity>
   ) : (
     <TouchableOpacity onPress={onPress}>
       <InfoContainer width={width}>
-        <TimeText>{item.time}</TimeText>
-        <TitleText>{item.name}</TitleText>
+        <TimeText>
+          {item.courses.daynm} {item.courses.starttime} ~ {item.courses.endtime}
+        </TimeText>
+        <TitleText>{item.courses.courseName}</TitleText>
       </InfoContainer>
     </TouchableOpacity>
   );

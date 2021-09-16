@@ -18,7 +18,7 @@ const ButtonBox = styled.View`
 `;
 
 const Detail = ({navigation, route}) => {
-  const lectureName = route.params.item.name;
+  const lectureName = route.params.item.courses.courseName;
   return (
     <Container>
       <SelectedLecture item={route.params.item} />
