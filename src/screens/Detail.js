@@ -17,7 +17,7 @@ const ButtonBox = styled.View`
   margin-top: 30px;
 `;
 
-const Detail = ({navigation, route, item}) => {
+const Detail = ({navigation, route}) => {
   const lectureName = route.params.item.name;
   return (
     <Container>
@@ -33,7 +33,7 @@ const Detail = ({navigation, route, item}) => {
         />
         <GreenButton
           title="출석 OTP 생성"
-          onPress={() => navigation.navigate('AxiosSample')}
+          onPress={() => navigation.navigate('Home')}
         />
       </ButtonBox>
     </Container>

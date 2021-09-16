@@ -20,7 +20,7 @@ const SemesterTab = styled.View`
   margin: 10px 0;
 `;
 
-const classItems = [
+const classItems1 = [
   {
     id: 1,
     name: '운영체제',
@@ -137,14 +137,14 @@ const Home = ({navigation}) => {
   const width = useWindowDimensions().width;
   const _height = useWindowDimensions().height;
   const [semesterBtnState, setSemesterBtnState] = useState([true, false]);
-  const [selectedSemester, setSelectedSemester] = useState(classItems);
+  const [selectedSemester, setSelectedSemester] = useState(classItems1);
 
   function changeSemesterBtn() {
     var arrayCopy = [...semesterBtnState];
     arrayCopy[0] = !arrayCopy[0];
     arrayCopy[1] = !arrayCopy[1];
     if (arrayCopy[0] === true) {
-      setSelectedSemester(classItems);
+      setSelectedSemester(classItems1);
     } else {
       setSelectedSemester(classItems2);
     }

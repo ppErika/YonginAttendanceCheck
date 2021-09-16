@@ -45,7 +45,7 @@ const MenuContainer2 = styled.View`
   margin-top: 60px;
 `;
 
-export function DrawerContents(props) {
+export function DrawerContents({navigation}) {
   return (
     <Container>
       <Profile>
@@ -95,17 +95,16 @@ export function DrawerContents(props) {
               <ItemText>환경설정</ItemText>
             </MenuItem>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('AxiosSample');
+            }}>
+            <MenuItem>
+              <ItemText>테스트 페이지</ItemText>
+            </MenuItem>
+          </TouchableOpacity>
         </MenuContainer2>
       </DrawerContentScrollView>
     </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  bottomDrawerSection: {
-    marginTop: 15,
-    borderTopColor: '#f4f4f4',
-    borderTopWidth: 1,
-    fontFamily: Fonts.spoqaMedium,
-  },
-});
