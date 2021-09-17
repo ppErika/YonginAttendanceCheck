@@ -8,6 +8,7 @@ import {Colors} from '../assets/colors/Colors';
 const Container = styled.View`
   padding-top: 20px;
   flex: 1;
+  background-color: ${Colors.backgroundGray};
 `;
 
 const Profile = styled.View`
