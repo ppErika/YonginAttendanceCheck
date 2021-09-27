@@ -71,10 +71,19 @@ const SelectedLecture = ({item, onPress}) => {
   return (
     <Container width={width}>
       <InfoBox onPress={onPress}>
-        <TimeText>{item.time}</TimeText>
-        <TitleText>{item.name}</TitleText>
-        <EtcText>{item.professor}</EtcText>
-        <EtcText>{item.lectureRoom}</EtcText>
+        <TimeText>
+          {item.courses.daynm} {item.courses.starttime} ~ {item.courses.endtime}
+        </TimeText>
+        <TitleText>{item.courses.courseName}</TitleText>
+        <EtcText>
+          {Object.keys(item.courseOwners).length === 0
+            ? '교수 정보가 없습니다.'
+            : item.courseOwners[0].userName + ' 교수'}
+          {item.courseOwners.userName}
+        </EtcText>
+        <EtcText>
+          {item.courses.roomnm}, {item.courses.grade}학점
+        </EtcText>
       </InfoBox>
       <View style={styles.lineStyle} />
       <TouchableOpacity onPress={onPress}>

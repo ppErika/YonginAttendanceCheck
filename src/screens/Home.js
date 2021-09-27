@@ -6,6 +6,7 @@ import SemesterButton from '../components/SemesterButton';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
 import {info, Api} from '../api/BaseApi';
+import {ErrorHandler} from '../api/ErrorHandler';
 
 const Container = styled.View`
   align-items: center;
@@ -20,7 +21,7 @@ const SemesterTab = styled.View`
   margin: 10px 0;
 `;
 
-const classItems = [
+const classItems1 = [
   {
     id: 1,
     name: '운영체제',
@@ -137,14 +138,16 @@ const Home = ({navigation}) => {
   const width = useWindowDimensions().width;
   const _height = useWindowDimensions().height;
   const [semesterBtnState, setSemesterBtnState] = useState([true, false]);
-  const [selectedSemester, setSelectedSemester] = useState(classItems);
+  const [selectedSemester, setSelectedSemester] = useState(classItems1);
+  const [classItems, setClassItems] = useState([]);
+  let seq = 1; //lecture에 보내는 배열의 순서
 
   function changeSemesterBtn() {
     var arrayCopy = [...semesterBtnState];
     arrayCopy[0] = !arrayCopy[0];
     arrayCopy[1] = !arrayCopy[1];
     if (arrayCopy[0] === true) {
-      setSelectedSemester(classItems);
+      setSelectedSemester(classItems1);
     } else {
       setSelectedSemester(classItems2);
     }
@@ -156,19 +159,20 @@ const Home = ({navigation}) => {
     api
       .get(info.apiList.getLecture)
       .then((res) => {
-        console.log(res.data);
+        //console.log(res.data);
+        setClassItems(res.data);
         //스테이트에 강의정보를 저장하여 사용
         //지금은 백엔드로부터 return오는 데이터가 프론트 양식과 맞지 않아서 적용 안함
       })
       .catch((error) => {
-        console.error(error);
+        ErrorHandler(error, getLecture);
       });
   }
 
   //컴포넌트를 처음 로딩할 때 호출
   useEffect(() => {
     getLecture();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container>
@@ -183,10 +187,11 @@ const Home = ({navigation}) => {
         ))}
       </SemesterTab>
       <ScrollView style={{height: _height - 130}}>
-        {selectedSemester.map((item) => (
+        {classItems.map((item) => (
           <Lecture
-            key={item.id}
+            key={item.courses.courseId}
             item={item}
+            seq={seq++}
             onPress={() => navigation.navigate('Detail', {item})}
           />
         ))}
