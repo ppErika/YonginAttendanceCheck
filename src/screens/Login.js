@@ -7,6 +7,7 @@ import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
 import {info, LoginApi} from '../api/BaseApi';
 import {storeToken} from '../store/EncryptedStorage';
+import {CheckBox} from 'react-native-elements';
 
 const Container = styled.View`
   justify-content: center;
@@ -34,6 +35,13 @@ const styles = StyleSheet.create({
     marginVertical: 65,
     resizeMode: 'contain',
   },
+  checkboxContainer: {
+    backgroundColor: Colors.backgroundColor,
+    padding: 0,
+  },
+  checkboxText: {
+    color: Colors.activeGreen,
+  },
 });
 
 const Login = ({navigation}) => {
@@ -42,19 +50,24 @@ const Login = ({navigation}) => {
   const [pwd, setPwd] = useState('');
   // 로그인 실패 했을 때 화면 테스트를 위한 변수 (실패가 false)
   const [permissionState, setPermissionState] = useState(true);
+  const [checked, setChecked] = useState(false);
 
-  //테스트용 ID:admin1111, PWD:pass
   function login() {
+    let type = 1;
+    if (checked) {
+      type = 2;
+    }
     const data = {
       userId: id,
       password: pwd,
-      userType: 1, //학생 1
+      userType: type, //학생 1, 교수 2
     };
     LoginApi()
       .post(info.apiList.login, data)
       .then((res) => {
         storeToken(res.data);
         setPwd('');
+        setPermissionState(true);
         navigation.navigate('Home');
       })
       .catch((error) => {
@@ -73,7 +86,7 @@ const Login = ({navigation}) => {
       />
 
       {permissionState === false ? (
-        <>
+        <InputBundleBox>
           <Input
             placeholder="ID"
             returnkeyType="next"
@@ -96,13 +109,27 @@ const Login = ({navigation}) => {
               borderColor: Colors.absentRed,
             }}
           />
+          <CheckBox
+            title="교수자 로그인"
+            checked={checked ? true : false}
+            onPress={() => {
+              setChecked(!checked);
+            }}
+            checkedColor={Colors.activeGreen}
+            uncheckedColor={Colors.activeGreen}
+            checkedIcon="dot-circle-o"
+            uncheckedIcon="circle-o"
+            fontFamily={Fonts.spoqaRegular}
+            containerStyle={styles.checkboxContainer}
+            textStyle={styles.checkboxText}
+          />
           <CautionBox width={width}>
             <Text
               style={{color: Colors.absentRed, fontFamily: Fonts.spoqaRegular}}>
               올바른 아이디 혹은 비밀번호가 아닙니다.
             </Text>
           </CautionBox>
-        </>
+        </InputBundleBox>
       ) : (
         <InputBundleBox>
           <Input
@@ -118,6 +145,20 @@ const Login = ({navigation}) => {
             value={pwd}
             onChangeText={(text) => setPwd(text)}
             secureTextEntry={true}
+          />
+          <CheckBox
+            title="교수자 로그인"
+            checked={checked ? true : false}
+            onPress={() => {
+              setChecked(!checked);
+            }}
+            checkedColor={Colors.activeGreen}
+            uncheckedColor={Colors.activeGreen}
+            checkedIcon="dot-circle-o"
+            uncheckedIcon="circle-o"
+            fontFamily={Fonts.spoqaRegular}
+            containerStyle={styles.checkboxContainer}
+            textStyle={styles.checkboxText}
           />
         </InputBundleBox>
       )}
