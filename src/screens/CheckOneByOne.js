@@ -99,7 +99,8 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
   const [seq, setSeq] = useState(1); // 현재 번호
   const [quota, setQuota] = useState(studentItems.length); // 총 인원
   const progress = seq / quota;
-  const [states, setStates] = useState([0, 0, 0, 0, 0, 0]);
+  const [states, setStates] = useState([1, 1, 1, 1, 1, 1]);
+  const seqq = seq - 1;
 
   // 출석으로 체크 (1)
   function ChangeAttendanceStates(i) {
@@ -216,21 +217,45 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
           )}
         </Box>
         <ButtonBox width={width}>
-          <AttendanceButton
-            title="결석"
-            style={{marginRight: 8}}
-            onPress={() => {
-              seq === quota ? null : setSeq(seq + 1);
-              ChangeAbsentStates(seq - 1);
-            }}
-          />
-          <AttendanceButton
-            title="출석"
-            onPress={() => {
-              seq === quota ? null : setSeq(seq + 1);
-              ChangeAttendanceStates(seq - 1);
-            }}
-          />
+          {states[seqq] === 1 ? (
+            <>
+              <AttendanceButton
+                title="결석"
+                style={{marginRight: 8, backgroundColor: Colors.inactiveGray}}
+                onPress={() => {
+                  seq === quota ? null : setSeq(seq + 1);
+                  ChangeAbsentStates(seq - 1);
+                }}
+              />
+              <AttendanceButton
+                title="출석"
+                style={{backgroundColor: Colors.attendanceGreen}}
+                onPress={() => {
+                  seq === quota ? null : setSeq(seq + 1);
+                  ChangeAttendanceStates(seq - 1);
+                }}
+              />
+            </>
+          ) : (
+            <>
+              <AttendanceButton
+                title="결석"
+                style={{marginRight: 8, backgroundColor: Colors.absentRed}}
+                onPress={() => {
+                  seq === quota ? null : setSeq(seq + 1);
+                  ChangeAbsentStates(seq - 1);
+                }}
+              />
+              <AttendanceButton
+                title="출석"
+                style={{backgroundColor: Colors.inactiveGray}}
+                onPress={() => {
+                  seq === quota ? null : setSeq(seq + 1);
+                  ChangeAttendanceStates(seq - 1);
+                }}
+              />
+            </>
+          )}
         </ButtonBox>
       </Container>
       {seq === quota ? (

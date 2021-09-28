@@ -7,7 +7,6 @@ import {Colors} from '../assets/colors/Colors';
 const AttendanceContainer = styled.View`
   width: ${({width}) => (width - 48) / 2}px;
   height: 50px;
-  background-color: ${Colors.attendanceGreen};
   border-radius: 5px;
   justify-content: center;
   align-items: center;
@@ -16,7 +15,6 @@ const AttendanceContainer = styled.View`
 const AbsenctContainer = styled.View`
   width: ${({width}) => (width - 48) / 2}px;
   height: 50px;
-  background-color: ${Colors.inactiveGray};
   border-radius: 5px;
   justify-content: center;
   align-items: center;
