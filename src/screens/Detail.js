@@ -29,12 +29,9 @@ const Detail = ({navigation, route}) => {
         />
         <GreenButton
           title="리스트 출석"
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('List', {lectureName})}
         />
-        <GreenButton
-          title="출석 OTP 생성"
-          onPress={() => navigation.navigate('Home')}
-        />
+        <GreenButton title="출석 OTP 생성" />
       </ButtonBox>
     </Container>
   );

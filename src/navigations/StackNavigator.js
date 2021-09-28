@@ -1,6 +1,13 @@
 import React from 'react';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
-import {Login, Home, Detail, AxiosSample, CheckOneByOne} from '../screens';
+import {
+  Login,
+  Home,
+  Detail,
+  AxiosSample,
+  CheckOneByOne,
+  List,
+} from '../screens';
 import {Colors} from '../assets/colors/Colors';
 import Header from '../components/Header';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -90,6 +97,26 @@ const StackNavigator = () => {
       <Stack.Screen
         name="CheckOneByOne"
         component={CheckOneByOne}
+        options={({route, navigation}) => ({
+          headerStyle: {
+            backgroundColor: Colors.backgroundGray,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTitleAlign: 'center',
+          headerTitle: () => <Header title={route.params.lectureName} />,
+          headerRight: () => (
+            <Icon
+              name="menu"
+              size={35}
+              onPress={() => navigation.openDrawer()}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="List"
+        component={List}
         options={({route, navigation}) => ({
           headerStyle: {
             backgroundColor: Colors.backgroundGray,
