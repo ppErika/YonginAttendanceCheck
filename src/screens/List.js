@@ -1,8 +1,8 @@
 import React from 'react';
+import {Alert, useWindowDimensions} from 'react-native';
+import {Searchbar} from 'react-native-paper';
 import styled from 'styled-components/native';
-import {Text} from 'react-native';
-import SelectedLecture from '../components/SelectedLecture';
-import GreenButton from '../components/GreenButton';
+import SaveButton from '../components/SaveButton';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
 
@@ -10,15 +10,33 @@ const Container = styled.View`
   align-items: center;
   padding-top: 20px;
 `;
-const ButtonBox = styled.View`
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  margin-top: 30px;
-`;
 
 const List = ({navigation, route}) => {
-  return <Container />;
+  const width = useWindowDimensions().width;
+  const [searchQuery, setSearchQuery] = React.useState('');
+  const onChangeSearch = (query) => setSearchQuery(query);
+
+  return (
+    <>
+      <Container>
+        <Searchbar
+          placeholder="검색하기"
+          onChangeText={onChangeSearch}
+          value={searchQuery}
+          style={{width: width - 40, height: 40, borderRadius: 25}}
+          inputStyle={{fontSize: 14, fontFamily: Fonts.spoqaRegular}}
+          iconColor={Colors.activeGreen}
+        />
+      </Container>
+      <SaveButton
+        title="완료하기"
+        style={{backgroundColor: Colors.activeGreen}}
+        onPress={() => {
+          Alert.alert('출석이 저장되었습니다.');
+        }}
+      />
+    </>
+  );
 };
 
 export default List;

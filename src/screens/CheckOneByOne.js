@@ -264,6 +264,7 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
           style={{backgroundColor: Colors.activeGreen}}
           onPress={() => {
             Alert.alert('출석이 저장되었습니다.' + states);
+            navigation.navigate('List', {lectureName});
           }}
         />
       ) : (
