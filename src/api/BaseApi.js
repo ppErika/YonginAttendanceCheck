@@ -9,6 +9,7 @@ export const info = {
     login: '/api/auth/login',
     getLecture: '/api/course',
     refresh: '/api/auth/token',
+    logout: '/api/auth/logout',
   },
 };
 
@@ -32,7 +33,7 @@ export async function Api() {
 }
 
 /**
- * 백엔드와 통신하여 로그인하는 함수
+ * 백엔드와 통신하여 로그인관련 작업을 처리하는 함수
  * @return {object} backend와 통신하여 로그인 할 수 있는 Axios 객체
  */
 export function LoginApi() {

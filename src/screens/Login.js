@@ -54,6 +54,7 @@ const Login = ({navigation}) => {
       .post(info.apiList.login, data)
       .then((res) => {
         storeToken(res.data);
+        setPwd('');
         navigation.navigate('Home');
       })
       .catch((error) => {
