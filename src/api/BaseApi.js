@@ -10,6 +10,7 @@ export const info = {
     getLecture: '/api/course',
     refresh: '/api/auth/token',
     logout: '/api/auth/logout',
+    getAttendance: '/api/attendance',
   },
 };
 
