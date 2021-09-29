@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import styled from 'styled-components/native';
-import {Text, ScrollView, useWindowDimensions} from 'react-native';
+import {ScrollView, useWindowDimensions} from 'react-native';
 import Lecture from '../components/Lecture';
 import SemesterButton from '../components/SemesterButton';
-import {Fonts} from '../assets/fonts/Fonts';
-import {Colors} from '../assets/colors/Colors';
 import {info, Api} from '../api/BaseApi';
 import {ErrorHandler} from '../api/ErrorHandler';
 
