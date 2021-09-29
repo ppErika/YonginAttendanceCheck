@@ -1,9 +1,11 @@
 import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
+import {TouchableOpacity} from 'react-native';
+import {DrawerContentScrollView} from '@react-navigation/drawer';
 import styled from 'styled-components/native';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
+import {getToken, removeToken} from '../store/EncryptedStorage';
+import {info, LoginApi} from '../api/BaseApi';
 
 const Container = styled.View`
   padding-top: 20px;
@@ -47,6 +49,26 @@ const MenuContainer2 = styled.View`
 `;
 
 export function DrawerContents({navigation}) {
+  async function logout() {
+    console.log('logout');
+    let data = await getToken();
+    let token = JSON.parse(data).token;
+    LoginApi()
+      .delete(info.apiList.logout, {data: token})
+      .then(async (res) => {
+        //로그아웃 성공시 백엔드에서 204코드 반환
+        if (res.status === 204) {
+          removeToken();
+          navigation.navigate('Login');
+        } else {
+          console.log(res.status);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   return (
     <Container>
       <Profile>
@@ -86,7 +108,10 @@ export function DrawerContents({navigation}) {
           </TouchableOpacity>
         </MenuContainer1>
         <MenuContainer2>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity
+            onPress={() => {
+              logout();
+            }}>
             <MenuItem>
               <ItemText>로그아웃</ItemText>
             </MenuItem>

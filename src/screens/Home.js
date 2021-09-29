@@ -130,14 +130,13 @@ const classItems2 = [
   },
 ];
 
-const SemesterItems = ['1학기', '여름학기'];
-
 const Home = ({navigation}) => {
   const width = useWindowDimensions().width;
   const _height = useWindowDimensions().height;
   const [semesterBtnState, setSemesterBtnState] = useState([true, false]);
   const [selectedSemester, setSelectedSemester] = useState(classItems1);
   const [classItems, setClassItems] = useState([]);
+  const [semesterItems, setSemesterItems] = useState([]);
   let seq = 1; //lecture에 보내는 배열의 순서
 
   function changeSemesterBtn() {
@@ -152,15 +151,25 @@ const Home = ({navigation}) => {
     setSemesterBtnState(arrayCopy);
   }
 
+  function setSemester(data) {
+    let termId = '';
+    let termArr = [];
+    data.forEach(function (item, index, arr) {
+      if (termId !== item.courses.courseTerm.courseTermId) {
+        termId = item.courses.courseTerm.courseTermId;
+        termArr.push(item.courses.courseTerm.courseTermName);
+      }
+    });
+    setSemesterItems(termArr);
+  }
+
   async function getLecture() {
     let api = await Api();
     api
       .get(info.apiList.getLecture)
       .then((res) => {
-        //console.log(res.data);
         setClassItems(res.data);
-        //스테이트에 강의정보를 저장하여 사용
-        //지금은 백엔드로부터 return오는 데이터가 프론트 양식과 맞지 않아서 적용 안함
+        setSemester(res.data);
       })
       .catch((error) => {
         ErrorHandler(error, getLecture);
@@ -175,7 +184,7 @@ const Home = ({navigation}) => {
   return (
     <Container>
       <SemesterTab width={width}>
-        {SemesterItems.map((item, i) => (
+        {semesterItems.map((item, i) => (
           <SemesterButton
             key={item}
             activeSemesterButton={semesterBtnState[i]}
