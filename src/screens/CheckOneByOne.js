@@ -146,7 +146,7 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
             fontFamily: Fonts.spoqaMedium,
             fontSize: 16,
             marginTop: 12,
-            marginBottom: 32,
+            marginBottom: 15,
           }}>
           {seq}/{quota}
         </Text>
@@ -172,7 +172,7 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
               borderRadius: 5,
               padding: 0,
               marginHorizontal: 38,
-              marginBottom: 49,
+              marginBottom: 30,
             }}>
             <Card.Image
               source={studentItems[seq - 1].photo}
