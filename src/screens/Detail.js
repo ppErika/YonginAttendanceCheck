@@ -15,14 +15,14 @@ const ButtonBox = styled.View`
 `;
 
 const Detail = ({navigation, route}) => {
-  const lectureName = route.params.item.courses.courseName;
+  const item = route.params.item;
   return (
     <Container>
       <SelectedLecture item={route.params.item} />
       <ButtonBox>
         <GreenButton
           title="한명씩 출석"
-          onPress={() => navigation.navigate('CheckOneByOne', {lectureName})}
+          onPress={() => navigation.navigate('CheckOneByOne', {item})}
         />
         <GreenButton
           title="리스트 출석"

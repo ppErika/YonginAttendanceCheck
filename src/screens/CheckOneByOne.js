@@ -15,6 +15,8 @@ import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
 import SaveButton from '../components/SaveButton';
 import AttendanceButton from '../components/AttendanceButton';
+import {info, Api} from '../api/BaseApi';
+import {ErrorHandler} from '../api/ErrorHandler';
 
 const Container = styled.View`
   align-items: center;
@@ -39,7 +41,7 @@ const ButtonBox = styled.View`
   flex-direction: row;
 `;
 
-const studentItems = [
+const studentItems1 = [
   {
     id: 1,
     code: 200000001,
@@ -97,10 +99,11 @@ const styles = StyleSheet.create({
 const CheckOneByOne = ({navigation, route, lectureName}) => {
   const width = useWindowDimensions().width;
   const [seq, setSeq] = useState(1); // 현재 번호
-  const [quota, setQuota] = useState(studentItems.length); // 총 인원
+  const [quota, setQuota] = useState(0); // 총 인원
   const progress = seq / quota;
   const [states, setStates] = useState([1, 1, 1, 1, 1, 1]);
   const seqq = seq - 1;
+  const [studentItems, setStudentItems] = useState([]);
 
   // 출석으로 체크 (1)
   function ChangeAttendanceStates(i) {
@@ -123,10 +126,26 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
     setStates(arrayCopy);
   }
 
-  // 마운트 시에 AddStates부르기 (미동작)
-  // useEffect(() => {
-  //   AddStates();
-  // }, []);
+  async function getAttendance() {
+    let api = await Api();
+    api
+      .get(
+        info.apiList.getAttendance + '/' + route.params.item.courses.courseId,
+      )
+      .then((res) => {
+        //console.log(res.data);
+        setStudentItems(res.data);
+        setQuota(res.data.length);
+      })
+      .catch((error) => {
+        ErrorHandler(error, getAttendance);
+      });
+  }
+
+  useEffect(() => {
+    //AddStates();
+    getAttendance();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -175,7 +194,7 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
               marginBottom: 30,
             }}>
             <Card.Image
-              source={studentItems[seq - 1].photo}
+              source={require('../assets/1.jpg')}
               style={styles.cardImageStyle}
             />
             <InfoBox>
@@ -187,7 +206,9 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
                   marginTop: 12,
                   marginBottom: 5,
                 }}>
-                {studentItems[seq - 1].name}
+                {Object.keys(studentItems).length === 0
+                  ? '학생 데이터가 없습니다.'
+                  : studentItems[seq - 1].userName}
               </Text>
               <Text
                 style={{
@@ -196,7 +217,9 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
                   fontSize: 16,
                   marginBottom: 12,
                 }}>
-                {studentItems[seq - 1].code}
+                {Object.keys(studentItems).length === 0
+                  ? '학생 데이터가 없습니다.'
+                  : studentItems[seq - 1].userNo}
               </Text>
             </InfoBox>
           </Card>
