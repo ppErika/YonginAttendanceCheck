@@ -96,7 +96,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const CheckOneByOne = ({navigation, route, lectureName}) => {
+const CheckOneByOne = ({navigation, route}) => {
+  const item = route.params.item;
   const width = useWindowDimensions().width;
   const [seq, setSeq] = useState(1); // 현재 번호
   const [quota, setQuota] = useState(0); // 총 인원
@@ -287,7 +288,7 @@ const CheckOneByOne = ({navigation, route, lectureName}) => {
           style={{backgroundColor: Colors.activeGreen}}
           onPress={() => {
             Alert.alert('출석이 저장되었습니다.' + states);
-            navigation.navigate('List', {lectureName});
+            navigation.navigate('List', {item});
           }}
         />
       ) : (

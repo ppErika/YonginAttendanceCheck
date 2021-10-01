@@ -126,7 +126,9 @@ const StackNavigator = () => {
             shadowOpacity: 0,
           },
           headerTitleAlign: 'center',
-          headerTitle: () => <Header title={route.params.lectureName} />,
+          headerTitle: () => (
+            <Header title={route.params.item.courses.courseName} />
+          ),
           headerRight: () => (
             <Icon
               name="menu"
