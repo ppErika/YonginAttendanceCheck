@@ -28,6 +28,12 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.spoqaRegular,
     textAlign: 'center',
   },
+  absetText: {
+    fontSize: 16,
+    color: Colors.absentRed,
+    fontFamily: Fonts.spoqaBold,
+    textAlign: 'center',
+  },
   row: {height: 50, flexDirection: 'row'},
   btn: {
     height: 50,
@@ -48,6 +54,9 @@ const List = ({navigation, route}) => {
   const [searchQuery, setSearchQuery] = React.useState('');
   const onChangeSearch = (query) => setSearchQuery(query);
 
+  const requestList = route.params.states;
+  const requestStd = route.params.studentItems;
+
   const table = {
     tableHead: ['학과/이름(학번)', '출결', ''],
     widthArr: [width / 2, width / 6, width / 3],
@@ -63,13 +72,30 @@ const List = ({navigation, route}) => {
 
   const tableData = [];
 
-  for (let i = 0; i < 30; i += 1) {
+  // 백 연결해서 length와 학생데이터 부분 수정해야 함 (현재는 List 단독페이지 들어갔을 때 에러)
+  for (let i = 0; i < requestList.length; i += 1) {
     const rowData = [];
     for (let j = 0; j < 3; j += 1) {
       if (j === 0) {
-        rowData.push('미디어디자인학과\n김예솔(202207011)');
+        rowData.push(
+          requestStd[i].departmentId.departmentName +
+            '\n' +
+            requestStd[i].userName +
+            '(' +
+            requestStd[i].userId +
+            ')',
+        );
       } else if (j === 1) {
-        rowData.push('출석');
+        switch (requestList[i]) {
+          case 0:
+            rowData.push('결석');
+            break;
+          case 1:
+            rowData.push('출석');
+            break;
+          default:
+            rowData.pust('');
+        }
       } else {
         rowData.push(element(i));
       }
@@ -118,7 +144,9 @@ const List = ({navigation, route}) => {
                   data={rowData}
                   widthArr={table.widthArr}
                   style={styles.row}
-                  textStyle={styles.text}
+                  textStyle={
+                    rowData[1] === '결석' ? styles.absetText : styles.text
+                  }
                 />
               ))}
             </Table>
