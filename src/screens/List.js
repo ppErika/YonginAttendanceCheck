@@ -9,7 +9,14 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {Searchbar} from 'react-native-paper';
-import {Table, Row} from 'react-native-table-component';
+import {
+  Table,
+  Row,
+  Col,
+  Cols,
+  Cell,
+  TableWrapper,
+} from 'react-native-table-component';
 import styled from 'styled-components/native';
 import SaveButton from '../components/SaveButton';
 import {Fonts} from '../assets/fonts/Fonts';
@@ -72,35 +79,67 @@ const List = ({navigation, route}) => {
 
   const tableData = [];
 
-  // 백 연결해서 length와 학생데이터 부분 수정해야 함 (현재는 List 단독페이지 들어갔을 때 에러)
-  for (let i = 0; i < requestList.length; i += 1) {
-    const rowData = [];
-    for (let j = 0; j < 3; j += 1) {
-      if (j === 0) {
-        rowData.push(
-          requestStd[i].departmentId.departmentName +
+  // 백 연결해서 length와 학생데이터 부분 수정해야 함 (현재는 List 단독페이지 들어갔을 때
+  // row
+  // for (let i = 0; i < requestList.length; i += 1) {
+  //   const rowData = [];
+  //   for (let j = 0; j < 3; j += 1) {
+  //     if (j === 0) {
+  //       rowData.push(
+  //         requestStd[i].departmentId.departmentName +
+  //           '\n' +
+  //           requestStd[i].userName +
+  //           '(' +
+  //           requestStd[i].userId +
+  //           ')',
+  //       );
+  //     } else if (j === 1) {
+  //       switch (requestList[i]) {
+  //         case 0:
+  //           rowData.push('결석');
+  //           break;
+  //         case 1:
+  //           rowData.push('출석');
+  //           break;
+  //         default:
+  //           rowData.pust('');
+  //       }
+  //     } else {
+  //       rowData.push(element(i));
+  //     }
+  //   }
+  //   tableData.push(rowData);
+  // }
+
+  // column
+  for (let i = 0; i < 3; i += 1) {
+    const colData = [];
+    for (let j = 0; j < requestList.length; j += 1) {
+      if (i === 0) {
+        colData.push(
+          requestStd[j].departmentId.departmentName +
             '\n' +
-            requestStd[i].userName +
+            requestStd[j].userName +
             '(' +
-            requestStd[i].userId +
+            requestStd[j].userId +
             ')',
         );
-      } else if (j === 1) {
+      } else if (i === 1) {
         switch (requestList[i]) {
           case 0:
-            rowData.push('결석');
+            colData.push('결석');
             break;
           case 1:
-            rowData.push('출석');
+            colData.push('출석');
             break;
           default:
-            rowData.pust('');
+            colData.pust('');
         }
       } else {
-        rowData.push(element(i));
+        colData.push(element(j));
       }
     }
-    tableData.push(rowData);
+    tableData.push(colData);
   }
 
   return (
@@ -133,6 +172,7 @@ const List = ({navigation, route}) => {
             />
           </Table>
           <ScrollView>
+            {/* row 했을 때
             <Table
               borderStyle={{
                 borderWidth: 1,
@@ -149,6 +189,37 @@ const List = ({navigation, route}) => {
                   }
                 />
               ))}
+            </Table> */}
+            <Table
+              style={{flexDirection: 'row'}}
+              borderStyle={{borderWidth: 1}}>
+              {/* Left Wrapper */}
+              <TableWrapper style={{width: 80}}>
+                <Cell data="" style={styles.singleHead} />
+                <TableWrapper style={{flexDirection: 'row'}}>
+                  <Col
+                    data={['H1', 'H2']}
+                    style={styles.head}
+                    heightArr={[60, 60]}
+                    textStyle={styles.text}
+                  />
+                  <Col
+                    data={table.tableTitle}
+                    style={styles.title}
+                    heightArr={[30, 30, 30, 30]}
+                    textStyle={styles.titleText}
+                  />
+                </TableWrapper>
+              </TableWrapper>
+
+              {/* Right Wrapper */}
+              <TableWrapper style={{flex: 1}}>
+                <Cols
+                  data={table.tableData}
+                  heightArr={[40, 30, 30, 30, 30]}
+                  textStyle={styles.text}
+                />
+              </TableWrapper>
             </Table>
           </ScrollView>
         </View>
