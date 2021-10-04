@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Alert,
   StyleSheet,
@@ -69,78 +69,108 @@ const List = ({navigation, route}) => {
     widthArr: [width / 2, width / 6, width / 3],
   };
 
+  const tableData = [];
+
   const element = (value) => (
-    <TouchableOpacity onPress={() => Alert.alert('#' + value)}>
+    <TouchableOpacity
+      onPress={() =>
+        Alert.alert(
+          '정정하기',
+          tableData[value][0] + '\n\n[' + tableData[value][1] + ']',
+          [
+            {
+              text: '지각으로 변경',
+              onPress: () => {
+                tableData[value][1] = 2;
+                Alert.alert('지각 처리 완료');
+              },
+              style: 'cancel',
+            },
+            {
+              text: '출석으로 변경',
+              onPress: () => {
+                tableData[value][1] = 1;
+                Alert.alert('출석 처리 완료');
+              },
+              style: 'cancel',
+            },
+          ],
+        )
+      }>
       <View style={styles.btn}>
         <Text style={styles.btnText}>정정하기</Text>
       </View>
     </TouchableOpacity>
   );
 
-  const tableData = [];
-
   // 백 연결해서 length와 학생데이터 부분 수정해야 함 (현재는 List 단독페이지 들어갔을 때
   // row
-  // for (let i = 0; i < requestList.length; i += 1) {
-  //   const rowData = [];
-  //   for (let j = 0; j < 3; j += 1) {
-  //     if (j === 0) {
-  //       rowData.push(
-  //         requestStd[i].departmentId.departmentName +
-  //           '\n' +
-  //           requestStd[i].userName +
-  //           '(' +
-  //           requestStd[i].userId +
-  //           ')',
-  //       );
-  //     } else if (j === 1) {
-  //       switch (requestList[i]) {
-  //         case 0:
-  //           rowData.push('결석');
-  //           break;
-  //         case 1:
-  //           rowData.push('출석');
-  //           break;
-  //         default:
-  //           rowData.pust('');
-  //       }
-  //     } else {
-  //       rowData.push(element(i));
-  //     }
-  //   }
-  //   tableData.push(rowData);
-  // }
-
-  // column
-  for (let i = 0; i < 3; i += 1) {
-    const colData = [];
-    for (let j = 0; j < requestList.length; j += 1) {
-      if (i === 0) {
-        colData.push(
-          requestStd[j].departmentId.departmentName +
+  for (let i = 0; i < requestList.length; i += 1) {
+    const rowData = [];
+    for (let j = 0; j < 3; j += 1) {
+      if (j === 0) {
+        rowData.push(
+          requestStd[i].departmentId.departmentName +
             '\n' +
-            requestStd[j].userName +
+            requestStd[i].userName +
             '(' +
-            requestStd[j].userId +
+            requestStd[i].userId +
             ')',
         );
-      } else if (i === 1) {
+      } else if (j === 1) {
         switch (requestList[i]) {
           case 0:
-            colData.push('결석');
+            rowData.push('결석');
             break;
           case 1:
-            colData.push('출석');
+            rowData.push('출석');
+            break;
+          case 2:
+            rowData.push('지각');
             break;
           default:
-            colData.pust('');
+            rowData.pust('');
         }
       } else {
-        colData.push(element(j));
+        rowData.push(element(i));
       }
     }
-    tableData.push(colData);
+    tableData.push(rowData);
   }
+
+  // useEffect(() => {}, [tableData]);
+  // eslint-disable-line react-hooks/exhaustive-deps
+
+  // column
+  // for (let i = 0; i < 3; i += 1) {
+  //   const colData = [];
+  //   for (let j = 0; j < requestList.length; j += 1) {
+  //     if (i === 0) {
+  //       colData.push(
+  //         requestStd[j].departmentId.departmentName +
+  //           '\n' +
+  //           requestStd[j].userName +
+  //           '(' +
+  //           requestStd[j].userId +
+  //           ')',
+  //       );
+  //     } else if (i === 1) {
+  //       switch (requestList[i]) {
+  //         case 0:
+  //           colData.push('결석');
+  //           break;
+  //         case 1:
+  //           colData.push('출석');
+  //           break;
+  //         default:
+  //           colData.pust('');
+  //       }
+  //     } else {
+  //       colData.push(element(j));
+  //     }
+  //   }
+  //   tableData.push(colData);
+  // }
 
   return (
     <>
@@ -172,7 +202,6 @@ const List = ({navigation, route}) => {
             />
           </Table>
           <ScrollView>
-            {/* row 했을 때
             <Table
               borderStyle={{
                 borderWidth: 1,
@@ -189,11 +218,11 @@ const List = ({navigation, route}) => {
                   }
                 />
               ))}
-            </Table> */}
-            <Table
+            </Table>
+            {/* <Table
               style={{flexDirection: 'row'}}
               borderStyle={{borderWidth: 1}}>
-              {/* Left Wrapper */}
+              // Left Wrapper
               <TableWrapper style={{width: 80}}>
                 <Cell data="" style={styles.singleHead} />
                 <TableWrapper style={{flexDirection: 'row'}}>
@@ -212,7 +241,7 @@ const List = ({navigation, route}) => {
                 </TableWrapper>
               </TableWrapper>
 
-              {/* Right Wrapper */}
+              // Right Wrapper
               <TableWrapper style={{flex: 1}}>
                 <Cols
                   data={table.tableData}
@@ -220,7 +249,7 @@ const List = ({navigation, route}) => {
                   textStyle={styles.text}
                 />
               </TableWrapper>
-            </Table>
+            </Table> */}
           </ScrollView>
         </View>
       </Container>
