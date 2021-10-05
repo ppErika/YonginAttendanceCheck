@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Alert,
   StyleSheet,
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 const List = ({navigation, route}) => {
   const width = useWindowDimensions().width;
   const height = useWindowDimensions().height;
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const onChangeSearch = (query) => setSearchQuery(query);
 
   const requestList = route.params.states;
@@ -81,7 +81,7 @@ const List = ({navigation, route}) => {
             {
               text: '지각으로 변경',
               onPress: () => {
-                tableData[value][1] = 2;
+                tableData[value][1] = '지각';
                 Alert.alert('지각 처리 완료');
               },
               style: 'cancel',
@@ -89,7 +89,7 @@ const List = ({navigation, route}) => {
             {
               text: '출석으로 변경',
               onPress: () => {
-                tableData[value][1] = 1;
+                tableData[value][1] = '출석';
                 Alert.alert('출석 처리 완료');
               },
               style: 'cancel',
@@ -207,17 +207,29 @@ const List = ({navigation, route}) => {
                 borderWidth: 1,
                 borderColor: Colors.backgroundGray,
               }}>
-              {tableData.map((rowData, index) => (
-                <Row
-                  key={index}
-                  data={rowData}
-                  widthArr={table.widthArr}
-                  style={styles.row}
-                  textStyle={
-                    rowData[1] === '결석' ? styles.absetText : styles.text
+              {tableData
+                .filter((rowData) => {
+                  if (searchQuery.length === 0) {
+                    return rowData;
+                  } else if (
+                    rowData[0].toLowerCase().includes(searchQuery.toLowerCase())
+                  ) {
+                    return rowData;
                   }
-                />
-              ))}
+                })
+                .map((rowData, index) => {
+                  return (
+                    <Row
+                      key={index}
+                      data={rowData}
+                      widthArr={table.widthArr}
+                      style={styles.row}
+                      textStyle={
+                        rowData[1] === '결석' ? styles.absetText : styles.text
+                      }
+                    />
+                  );
+                })}
             </Table>
             {/* <Table
               style={{flexDirection: 'row'}}
@@ -257,7 +269,7 @@ const List = ({navigation, route}) => {
         title="완료하기"
         style={{backgroundColor: Colors.activeGreen}}
         onPress={() => {
-          Alert.alert('저장완료');
+          Alert.alert('저장완료', '총원: ' + tableData.length);
         }}
       />
     </>
