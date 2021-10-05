@@ -9,14 +9,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {Searchbar} from 'react-native-paper';
-import {
-  Table,
-  Row,
-  Col,
-  Cols,
-  Cell,
-  TableWrapper,
-} from 'react-native-table-component';
+import {Table, Row, Col, TableWrapper} from 'react-native-table-component';
 import styled from 'styled-components/native';
 import SaveButton from '../components/SaveButton';
 import {Fonts} from '../assets/fonts/Fonts';
@@ -29,13 +22,25 @@ const Container = styled.View`
 
 const styles = StyleSheet.create({
   head: {height: 45},
+  majorText: {
+    fontSize: 12,
+    color: Colors.activeGreen,
+    fontFamily: Fonts.spoqaRegular,
+    marginLeft: 20,
+  },
+  stdText: {
+    fontSize: 18,
+    color: Colors.activeGreen,
+    fontFamily: Fonts.spoqaMedium,
+    marginLeft: 20,
+  },
   text: {
     fontSize: 16,
     color: Colors.activeGreen,
     fontFamily: Fonts.spoqaRegular,
     textAlign: 'center',
   },
-  absetText: {
+  absentText: {
     fontSize: 16,
     color: Colors.absentRed,
     fontFamily: Fonts.spoqaBold,
@@ -60,7 +65,6 @@ const List = ({navigation, route}) => {
   const height = useWindowDimensions().height;
   const [searchQuery, setSearchQuery] = useState('');
   const onChangeSearch = (query) => setSearchQuery(query);
-
   const requestList = route.params.states;
   const requestStd = route.params.studentItems;
 
@@ -69,19 +73,23 @@ const List = ({navigation, route}) => {
     widthArr: [width / 2, width / 6, width / 3],
   };
 
-  const tableData = [];
-
+  // 정정하기 버튼, 그 버튼을 눌렀을 때
   const element = (value) => (
     <TouchableOpacity
       onPress={() =>
         Alert.alert(
           '정정하기',
-          tableData[value][0] + '\n\n[' + tableData[value][1] + ']',
+          tableData.stdInfo[value * 2] +
+            '\n' +
+            tableData.stdInfo[value * 2 + 1] +
+            '\n\n[' +
+            tableData.stateInfo[value] +
+            ']',
           [
             {
               text: '지각으로 변경',
               onPress: () => {
-                tableData[value][1] = '지각';
+                tableData.stateInfo[value] = '지각';
                 Alert.alert('지각 처리 완료');
               },
               style: 'cancel',
@@ -89,7 +97,7 @@ const List = ({navigation, route}) => {
             {
               text: '출석으로 변경',
               onPress: () => {
-                tableData[value][1] = '출석';
+                tableData.stateInfo[value] = '출석';
                 Alert.alert('출석 처리 완료');
               },
               style: 'cancel',
@@ -105,72 +113,92 @@ const List = ({navigation, route}) => {
 
   // 백 연결해서 length와 학생데이터 부분 수정해야 함 (현재는 List 단독페이지 들어갔을 때
   // row
-  for (let i = 0; i < requestList.length; i += 1) {
-    const rowData = [];
-    for (let j = 0; j < 3; j += 1) {
-      if (j === 0) {
-        rowData.push(
-          requestStd[i].departmentId.departmentName +
-            '\n' +
-            requestStd[i].userName +
-            '(' +
-            requestStd[i].userId +
-            ')',
-        );
-      } else if (j === 1) {
-        switch (requestList[i]) {
-          case 0:
-            rowData.push('결석');
-            break;
-          case 1:
-            rowData.push('출석');
-            break;
-          case 2:
-            rowData.push('지각');
-            break;
-          default:
-            rowData.pust('');
-        }
-      } else {
-        rowData.push(element(i));
-      }
-    }
-    tableData.push(rowData);
-  }
+  // for (let i = 0; i < requestList.length; i += 1) {
+  //   const rowData = [];
+  //   for (let j = 0; j < 3; j += 1) {
+  //     if (j === 0) {
+  //       rowData.push(
+  //         requestStd[i].departmentId.departmentName +
+  //           '\n' +
+  //           requestStd[i].userName +
+  //           '(' +
+  //           requestStd[i].userId +
+  //           ')',
+  //       );
+  //     } else if (j === 1) {
+  //       switch (requestList[i]) {
+  //         case 0:
+  //           rowData.push('결석');
+  //           break;
+  //         case 1:
+  //           rowData.push('출석');
+  //           break;
+  //         case 2:
+  //           rowData.push('지각');
+  //           break;
+  //         default:
+  //           rowData.pust('');
+  //       }
+  //     } else {
+  //       rowData.push(element(i));
+  //     }
+  //   }
+  //   tableData.push(rowData);
+  // }
 
   // useEffect(() => {}, [tableData]);
   // eslint-disable-line react-hooks/exhaustive-deps
 
+  const colData0 = []; // 학과/이름(학번)
+  const colData1 = []; // 출결
+  const colData2 = []; // 버튼이 들어가는 부분
+
   // column
-  // for (let i = 0; i < 3; i += 1) {
-  //   const colData = [];
-  //   for (let j = 0; j < requestList.length; j += 1) {
-  //     if (i === 0) {
-  //       colData.push(
-  //         requestStd[j].departmentId.departmentName +
-  //           '\n' +
-  //           requestStd[j].userName +
-  //           '(' +
-  //           requestStd[j].userId +
-  //           ')',
-  //       );
-  //     } else if (i === 1) {
-  //       switch (requestList[i]) {
-  //         case 0:
-  //           colData.push('결석');
-  //           break;
-  //         case 1:
-  //           colData.push('출석');
-  //           break;
-  //         default:
-  //           colData.pust('');
-  //       }
-  //     } else {
-  //       colData.push(element(j));
-  //     }
-  //   }
-  //   tableData.push(colData);
-  // }
+  for (let i = 0; i < 3; i += 1) {
+    if (i === 0) {
+      for (let j = 0; j < requestList.length; j += 1) {
+        colData0.push(requestStd[j].departmentId.departmentName);
+        colData0.push(
+          requestStd[j].userName + '(' + requestStd[j].userId + ')',
+        );
+      }
+    } else {
+      for (let j = 0; j < requestList.length; j += 1) {
+        if (i === 1) {
+          switch (requestList[j]) {
+            case 0:
+              colData1.push('결석');
+              break;
+            case 1:
+              colData1.push('출석');
+              break;
+            default:
+              colData1.pust(''); // 입력값이 없을 경우
+          }
+        } else {
+          colData2.push(element(j));
+        }
+      }
+    }
+  }
+
+  const tableData = {
+    stdInfo: colData0, // 학과/이름(학번)
+    stateInfo: colData1, // 출결
+    btnInfo: colData2, // 버튼
+  };
+
+  // height 길이 조절하는 부분
+  const heightArr0 = [];
+  const heightArr1 = [];
+
+  for (let i = 0; i < requestList.length; i += 1) {
+    for (let j = 0; j < 2; j += 1) {
+      heightArr0.push(15); // 학과 높이
+      heightArr0.push(35); // 이름(학번) 높이
+    }
+    heightArr1.push(50); // 기본 높이
+  }
 
   return (
     <>
@@ -202,7 +230,7 @@ const List = ({navigation, route}) => {
             />
           </Table>
           <ScrollView>
-            <Table
+            {/* <Table
               borderStyle={{
                 borderWidth: 1,
                 borderColor: Colors.backgroundGray,
@@ -230,38 +258,42 @@ const List = ({navigation, route}) => {
                     />
                   );
                 })}
-            </Table>
-            {/* <Table
+            </Table> */}
+            <Table
               style={{flexDirection: 'row'}}
-              borderStyle={{borderWidth: 1}}>
-              // Left Wrapper
-              <TableWrapper style={{width: 80}}>
-                <Cell data="" style={styles.singleHead} />
-                <TableWrapper style={{flexDirection: 'row'}}>
-                  <Col
-                    data={['H1', 'H2']}
-                    style={styles.head}
-                    heightArr={[60, 60]}
-                    textStyle={styles.text}
-                  />
-                  <Col
-                    data={table.tableTitle}
-                    style={styles.title}
-                    heightArr={[30, 30, 30, 30]}
-                    textStyle={styles.titleText}
-                  />
-                </TableWrapper>
-              </TableWrapper>
-
-              // Right Wrapper
-              <TableWrapper style={{flex: 1}}>
-                <Cols
-                  data={table.tableData}
-                  heightArr={[40, 30, 30, 30, 30]}
+              borderStyle={{
+                borderWidth: 1,
+                borderColor: Colors.backgroundGray,
+              }}>
+              <TableWrapper style={{width: width, flexDirection: 'row'}}>
+                <Col
+                  data={tableData.stdInfo}
+                  heightArr={heightArr0}
+                  width={width / 2}
+                  textStyle={
+                    // 수정해야할 부분 - 전공, 이름(학번) 스타일 각각 적용하기
+                    heightArr0 % 2 === 0 ? styles.majorText : styles.stdText
+                  }
+                />
+                <Col
+                  data={tableData.stateInfo}
+                  heightArr={heightArr1}
+                  width={width / 6}
+                  textStyle={
+                    // 수정해야할 부분 - 결석 textStyle 적용하기
+                    tableData.stateInfo === '결석'
+                      ? styles.absentText
+                      : styles.text
+                  }
+                />
+                <Col
+                  data={tableData.btnInfo}
+                  heightArr={heightArr1}
+                  width={width / 3}
                   textStyle={styles.text}
                 />
               </TableWrapper>
-            </Table> */}
+            </Table>
           </ScrollView>
         </View>
       </Container>
