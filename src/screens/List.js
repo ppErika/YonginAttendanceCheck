@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Alert,
   StyleSheet,
@@ -9,7 +9,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {Searchbar} from 'react-native-paper';
-import {Table, Row} from 'react-native-table-component';
+import {Table, Row, Col, TableWrapper} from 'react-native-table-component';
 import styled from 'styled-components/native';
 import SaveButton from '../components/SaveButton';
 import {Fonts} from '../assets/fonts/Fonts';
@@ -22,19 +22,38 @@ const Container = styled.View`
 
 const styles = StyleSheet.create({
   head: {height: 45},
+  majorText: {
+    fontSize: 12,
+    color: Colors.activeGreen,
+    fontFamily: Fonts.spoqaRegular,
+    marginLeft: 20,
+  },
+  stdText: {
+    fontSize: 18,
+    color: Colors.activeGreen,
+    fontFamily: Fonts.spoqaMedium,
+    marginLeft: 20,
+  },
+  infoText: {
+    fontSize: 16,
+    color: Colors.activeGreen,
+    fontFamily: Fonts.spoqaMedium,
+    marginLeft: 20,
+  },
   text: {
     fontSize: 16,
     color: Colors.activeGreen,
     fontFamily: Fonts.spoqaRegular,
     textAlign: 'center',
   },
-  absetText: {
+  absentText: {
     fontSize: 16,
     color: Colors.absentRed,
     fontFamily: Fonts.spoqaBold,
     textAlign: 'center',
   },
-  row: {height: 50, flexDirection: 'row'},
+  wrapper: {flexDirection: 'row'},
+  row: {height: 50},
   btn: {
     height: 50,
     backgroundColor: Colors.activeGreen,
@@ -51,33 +70,108 @@ const styles = StyleSheet.create({
 const List = ({navigation, route}) => {
   const width = useWindowDimensions().width;
   const height = useWindowDimensions().height;
-  const [searchQuery, setSearchQuery] = React.useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const onChangeSearch = (query) => setSearchQuery(query);
-
   const requestList = route.params.states;
   const requestStd = route.params.studentItems;
+  const [personnel, setPersonnel] = useState([0, 0, 0]); // 결석(0), 출석(1), 지각(2) 순
 
-  const table = {
-    tableHead: ['학과/이름(학번)', '출결', ''],
-    widthArr: [width / 2, width / 6, width / 3],
-  };
-
+  // 정정하기 버튼, 그 버튼을 눌렀을 때
   const element = (value) => (
-    <TouchableOpacity onPress={() => Alert.alert('#' + value)}>
-      <View style={styles.btn}>
-        <Text style={styles.btnText}>정정하기</Text>
-      </View>
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity
+        onPress={() =>
+          Alert.alert(
+            '정정하기',
+            table.tableTitle[value] + '\n\n[' + table.tableData[value][0] + ']',
+            table.tableData[value][0] === '결석'
+              ? [
+                  {
+                    text: '지각으로 변경',
+                    onPress: () => {
+                      table.tableData[value][0] = '지각';
+                      Alert.alert('지각 처리 완료');
+                    },
+                    style: 'cancel', // ios only
+                  },
+                  {
+                    text: '출석으로 변경',
+                    onPress: () => {
+                      table.tableData[value][0] = '출석';
+                      Alert.alert('출석 처리 완료');
+                    },
+                    style: 'cancel', // ios only
+                  },
+                ]
+              : table.tableData[value][0] === '출석'
+              ? [
+                  {
+                    text: '지각으로 변경',
+                    onPress: () => {
+                      table.tableData[value][0] = '지각';
+                      Alert.alert('지각 처리 완료');
+                    },
+                    style: 'cancel',
+                  },
+                  {
+                    text: '결석으로 변경',
+                    onPress: () => {
+                      table.tableData[value][0] = '결석';
+                      Alert.alert('결석 처리 완료');
+                    },
+                    style: 'cancel',
+                  },
+                ]
+              : [
+                  {
+                    text: '결석으로 변경',
+                    onPress: () => {
+                      table.tableData[value][0] = '결석';
+                      Alert.alert('결석 처리 완료');
+                    },
+                    style: 'cancel',
+                  },
+                  {
+                    text: '출석으로 변경',
+                    onPress: () => {
+                      table.tableData[value][0] = '출석';
+                      Alert.alert('출석 처리 완료');
+                    },
+                    style: 'cancel',
+                  },
+                ],
+          )
+        }>
+        <View style={styles.btn}>
+          <Text style={styles.btnText}>정정하기</Text>
+        </View>
+      </TouchableOpacity>
+    </>
   );
 
-  const tableData = [];
+  // 출석, 결석, 지각 인원 체크
+  function CountPersonnel() {
+    var tempArr = [0, 0, 0];
+    table.tableData.map((data, i) => {
+      data[0] === '결석'
+        ? (tempArr[0] += 1)
+        : data[0] === '출석'
+        ? (tempArr[1] += 1)
+        : (tempArr[2] += 1);
+    });
+    setPersonnel(tempArr);
+  }
 
-  // 백 연결해서 length와 학생데이터 부분 수정해야 함 (현재는 List 단독페이지 들어갔을 때 에러)
+  // 백 연결해서 length와 학생데이터 부분 수정해야 함 (현재는 List 단독페이지 들어갔을 때
+  // row
+  const titleData = [];
+  const rowData = [];
   for (let i = 0; i < requestList.length; i += 1) {
-    const rowData = [];
+    const tempStateData = [];
+
     for (let j = 0; j < 3; j += 1) {
       if (j === 0) {
-        rowData.push(
+        titleData.push(
           requestStd[i].departmentId.departmentName +
             '\n' +
             requestStd[i].userName +
@@ -88,20 +182,84 @@ const List = ({navigation, route}) => {
       } else if (j === 1) {
         switch (requestList[i]) {
           case 0:
-            rowData.push('결석');
+            tempStateData.push('결석');
             break;
           case 1:
-            rowData.push('출석');
+            tempStateData.push('출석');
+            break;
+          case 2:
+            tempStateData.push('지각');
             break;
           default:
-            rowData.pust('');
+            tempStateData.pust('');
         }
       } else {
-        rowData.push(element(i));
+        tempStateData.push(element(i));
       }
     }
-    tableData.push(rowData);
+    rowData.push(tempStateData);
   }
+
+  // col
+  // const colData0 = []; // 학과/이름(학번)
+  // const colData1 = []; // 출결
+  // const colData2 = []; // 버튼이 들어가는 부분
+  //
+  // for (let i = 0; i < 3; i += 1) {
+  //   if (i === 0) {
+  //     for (let j = 0; j < requestList.length; j += 1) {
+  //       colData0.push(requestStd[j].departmentId.departmentName);
+  //       colData0.push(
+  //         requestStd[j].userName + '(' + requestStd[j].userId + ')',
+  //       );
+  //     }
+  //   } else {
+  //     for (let j = 0; j < requestList.length; j += 1) {
+  //       if (i === 1) {
+  //         switch (requestList[j]) {
+  //           case 0:
+  //             colData1.push('결석');
+  //             break;
+  //           case 1:
+  //             colData1.push('출석');
+  //             break;
+  //           default:
+  //             colData1.pust(''); // 입력값이 없을 경우
+  //         }
+  //       } else {
+  //         colData2.push(element(j));
+  //       }
+  //     }
+  //   }
+  // }
+
+  // const tableData = {
+  //   stdInfo: colData0, // 학과/이름(학번)
+  //   stateInfo: colData1, // 출결
+  //   btnInfo: colData2, // 버튼
+  // };
+
+  // height 길이 조절하는 부분
+  const heightArr0 = [];
+  const heightArr1 = [];
+
+  for (let i = 0; i < requestList.length; i += 1) {
+    for (let j = 0; j < 2; j += 1) {
+      heightArr0.push(15); // 학과 높이
+      heightArr0.push(35); // 이름(학번) 높이
+    }
+    heightArr1.push(50); // 기본 높이
+  }
+
+  const table = {
+    tableHead: ['학과/이름(학번)', '출결', ''], // 0번째 row
+    tableTitle: titleData, // 학과/이름(학번)
+    tableData: rowData, // 출결과 버튼
+  };
+
+  // 추가 해야 할 부분
+  // table의 값이 변경이 될 때마다 화면을 리프레시 하고 싶다
+  // useEffect(() => {}, []);
 
   return (
     <>
@@ -127,7 +285,7 @@ const List = ({navigation, route}) => {
             }}>
             <Row
               data={table.tableHead}
-              widthArr={table.widthArr}
+              widthArr={[width / 2, width / 6, width / 3]}
               style={styles.head}
               textStyle={styles.text}
             />
@@ -138,18 +296,128 @@ const List = ({navigation, route}) => {
                 borderWidth: 1,
                 borderColor: Colors.backgroundGray,
               }}>
-              {tableData.map((rowData, index) => (
-                <Row
-                  key={index}
-                  data={rowData}
-                  widthArr={table.widthArr}
-                  style={styles.row}
+              <TableWrapper style={styles.wrapper}>
+                <Col
+                  data={table.tableTitle}
+                  style={styles.title}
+                  heightArr={heightArr1}
+                  width={width / 2}
                   textStyle={
-                    rowData[1] === '결석' ? styles.absetText : styles.text
+                    // 수정해야할 부분 (학과/이름(학번) style)
+                    styles.infoText
                   }
                 />
-              ))}
+                {/* <Table>
+                  {table.tableTitle
+                    .filter((data) => {
+                      if (searchQuery.length === 0) {
+                        return data;
+                      } else if (
+                        data.toLowerCase().includes(searchQuery.toLowerCase())
+                      ) {
+                        console.log(data);
+                        return data;
+                      }
+                    })
+                    .map((rowData, index) => (
+                      <Row
+                        key={index}
+                        data={rowData}
+                        widthArr={[width / 2]}
+                        style={styles.row}
+                        textStyle={styles.infoText} // 수정해야할 부분 (학과/이름(학번) style)
+                      />
+                    ))}
+                </Table> */}
+                <Table>
+                  {table.tableData.map((rowData, index) => (
+                    <Row
+                      key={index}
+                      data={rowData}
+                      widthArr={[width / 6, width / 3]}
+                      style={styles.row}
+                      textStyle={
+                        rowData[0] === '결석' ? styles.absentText : styles.text
+                      }
+                    />
+                  ))}
+                </Table>
+              </TableWrapper>
+              {/* {table.tableData
+                .filter((rowData) => {
+                  if (searchQuery.length === 0) {
+                    return rowData;
+                  } else if (
+                    rowData[0].toLowerCase().includes(searchQuery.toLowerCase())
+                  ) {
+                    return rowData;
+                  }
+                })
+                .map((rowData, index) => {
+                  return (
+                    <Row
+                      key={index}
+                      data={rowData}
+                      widthArr={table.widthArr}
+                      style={styles.row}
+                      textStyle={
+                        rowData[1] === '결석' ? styles.absentText : styles.text
+                      }
+                    />
+                  );
+                })} */}
             </Table>
+            {/* <Table
+              style={{flexDirection: 'row'}}
+              borderStyle={{
+                borderWidth: 1,
+                borderColor: Colors.backgroundGray,
+              }}>
+              {tableData.stdInfo
+                .filter((stdInfo) => {
+                  if (searchQuery.length === 0) {
+                    return stdInfo;
+                  } else if (
+                    stdInfo.toLowerCase().includes(searchQuery.toLowerCase())
+                  ) {
+                    return stdInfo;
+                  }
+                })
+                .map((stdInfo, index) => {
+                  return (
+                    <TableWrapper style={{width: width, flexDirection: 'row'}}>
+                      <Col
+                        data={tableData.stdInfo}
+                        heightArr={heightArr0}
+                        width={width / 2}
+                        textStyle={
+                          // 수정해야할 부분 - 전공, 이름(학번) 스타일 각각 적용하기
+                          heightArr0 % 2 === 0
+                            ? styles.majorText
+                            : styles.stdText
+                        }
+                      />
+                      <Col
+                        data={tableData.stateInfo}
+                        heightArr={heightArr1}
+                        width={width / 6}
+                        textStyle={
+                          // 수정해야할 부분 - 결석 textStyle 적용하기
+                          tableData.stateInfo === '결석'
+                            ? styles.absentText
+                            : styles.text
+                        }
+                      />
+                      <Col
+                        data={tableData.btnInfo}
+                        heightArr={heightArr1}
+                        width={width / 3}
+                        textStyle={styles.text}
+                      />
+                    </TableWrapper>
+                  );
+                })}
+            </Table> */}
           </ScrollView>
         </View>
       </Container>
@@ -157,7 +425,18 @@ const List = ({navigation, route}) => {
         title="완료하기"
         style={{backgroundColor: Colors.activeGreen}}
         onPress={() => {
-          Alert.alert('저장완료');
+          CountPersonnel();
+          Alert.alert(
+            '저장완료',
+            '총원: ' +
+              table.tableData.length +
+              '\n출석: ' +
+              personnel[1] +
+              ' 결석: ' +
+              personnel[0] +
+              ' 지각: ' +
+              personnel[2],
+          );
         }}
       />
     </>
