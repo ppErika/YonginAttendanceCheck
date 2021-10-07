@@ -41,45 +41,6 @@ const ButtonBox = styled.View`
   flex-direction: row;
 `;
 
-const studentItems1 = [
-  {
-    id: 1,
-    code: 200000001,
-    name: '김땡땡',
-    photo: require('../assets/1.jpg'),
-  },
-  {
-    id: 2,
-    code: 200000002,
-    name: '이땡땡',
-    photo: require('../assets/2.jpg'),
-  },
-  {
-    id: 3,
-    code: 200000003,
-    name: '박땡땡',
-    photo: require('../assets/3.jpg'),
-  },
-  {
-    id: 4,
-    code: 200000004,
-    name: '최땡땡',
-    photo: require('../assets/1.jpg'),
-  },
-  {
-    id: 5,
-    code: 200000005,
-    name: '정땡땡',
-    photo: require('../assets/2.jpg'),
-  },
-  {
-    id: 6,
-    code: 200000006,
-    name: '한땡땡',
-    photo: require('../assets/3.jpg'),
-  },
-];
-
 const styles = StyleSheet.create({
   iconStyle: {
     width: 23,
@@ -103,19 +64,19 @@ const CheckOneByOne = ({navigation, route}) => {
   const [quota, setQuota] = useState(0); // 총 인원
   const progress = seq / quota;
   //const [states, setStates] = useState([]);
-  const [studentItems, setStudentItems] = useState([]);
+  const [studentList, setStudentList] = useState([]);
 
   // 출결 체크 true == 출석
   function ChangeAttendanceStates(i, bool) {
-    var arrayCopy = [...studentItems];
+    var arrayCopy = [...studentList];
     if (bool === true) {
       arrayCopy[i].status = 1;
     } else {
       arrayCopy[i].status = 0;
     }
-    setStudentItems(arrayCopy);
-    console.log(studentItems[i].user.userName);
-    console.log(studentItems[i].status);
+    setStudentList(arrayCopy);
+    console.log(studentList[i].user.userName);
+    console.log(studentList[i].status);
   }
 
   async function attByClass() {
@@ -123,7 +84,7 @@ const CheckOneByOne = ({navigation, route}) => {
     api
       .get(info.apiList.attByClass + '/207')
       .then((res) => {
-        setStudentItems(res.data);
+        setStudentList(res.data);
         setQuota(res.data.length);
       })
       .catch((error) => {
@@ -195,9 +156,9 @@ const CheckOneByOne = ({navigation, route}) => {
                   marginTop: 12,
                   marginBottom: 5,
                 }}>
-                {Object.keys(studentItems).length === 0
+                {Object.keys(studentList).length === 0
                   ? '학생 데이터가 없습니다.'
-                  : studentItems[seq - 1].user.userName}
+                  : studentList[seq - 1].user.userName}
               </Text>
               <Text
                 style={{
@@ -206,9 +167,9 @@ const CheckOneByOne = ({navigation, route}) => {
                   fontSize: 16,
                   marginBottom: 12,
                 }}>
-                {Object.keys(studentItems).length === 0
+                {Object.keys(studentList).length === 0
                   ? '학생 데이터가 없습니다.'
-                  : studentItems[seq - 1].user.userId}
+                  : studentList[seq - 1].user.userId}
               </Text>
             </InfoBox>
           </Card>
@@ -229,7 +190,7 @@ const CheckOneByOne = ({navigation, route}) => {
           )}
         </Box>
         <ButtonBox width={width}>
-          {Object.keys(studentItems).length === 0 ? (
+          {Object.keys(studentList).length === 0 ? (
             <>
               <AttendanceButton
                 title="결석"
@@ -248,7 +209,7 @@ const CheckOneByOne = ({navigation, route}) => {
                 }}
               />
             </>
-          ) : studentItems[seq - 1].status === 1 ? (
+          ) : studentList[seq - 1].status === 1 ? (
             <>
               <AttendanceButton
                 title="결석"
@@ -295,7 +256,7 @@ const CheckOneByOne = ({navigation, route}) => {
           style={{backgroundColor: Colors.activeGreen}}
           onPress={() => {
             // Alert.alert('출석이 저장되었습니다.' + states);
-            navigation.navigate('List', {item, studentItems});
+            navigation.navigate('List', {item, studentList});
           }}
         />
       ) : (
