@@ -69,9 +69,9 @@ const CheckOneByOne = ({navigation, route}) => {
   function setStatus(i, bool) {
     var arrayCopy = [...studentList];
     if (bool === true) {
-      arrayCopy[i].status = 1;
+      arrayCopy[i].status = '1';
     } else {
-      arrayCopy[i].status = 0;
+      arrayCopy[i].status = '0';
     }
     setStudentList(arrayCopy);
   }
@@ -206,7 +206,7 @@ const CheckOneByOne = ({navigation, route}) => {
                 }}
               />
             </>
-          ) : studentList[seq - 1].status === 1 ? (
+          ) : studentList[seq - 1].status === '1' ? (
             <>
               <AttendanceButton
                 title="결석"

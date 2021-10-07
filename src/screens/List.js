@@ -79,9 +79,11 @@ const List = ({navigation, route}) => {
 
   //컴포넌트를 처음 로딩할 때 호출
   useEffect(() => {
-    //파라미터로 studentList를 받아올 때
+    //파라미터로 studentList를 받아올 때와 아닐 때 구분
     if (route.params.studentList) {
       setStudentList(route.params.studentList);
+    } else {
+      attByClass();
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -164,10 +166,23 @@ const List = ({navigation, route}) => {
     </>
   );
 
+  async function attByClass() {
+    let api = await Api();
+    api
+      .get(info.apiList.attByClass + '/207')
+      .then((res) => {
+        setStudentList(res.data);
+      })
+      .catch((error) => {
+        //에러 처리, 토큰 재발급을 위해 error, function을 넘겨줌
+        ErrorHandler(error, attByClass);
+      });
+  }
+
   //출결정보를 수정할 때 백엔드에 보낼 데이터 수정
   function setStatus(seq, bool) {
     var arrayCopy = [...studentList];
-    bool ? (arrayCopy[seq].status = 1) : (arrayCopy[seq].status = 0);
+    bool ? (arrayCopy[seq].status = '1') : (arrayCopy[seq].status = '0');
     setStudentList(arrayCopy);
   }
 
@@ -239,13 +254,13 @@ const List = ({navigation, route}) => {
         );
       } else if (j === 1) {
         switch (studentList[i].status) {
-          case 0:
+          case '0':
             tempStatusData.push('결석');
             break;
-          case 1:
+          case '1':
             tempStatusData.push('출석');
             break;
-          case 2:
+          case '2':
             tempStatusData.push('지각');
             break;
           default:
