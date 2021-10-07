@@ -69,17 +69,11 @@ const styles = StyleSheet.create({
 const AttendanceWeek = ({navigation, route}) => {
   const width = useWindowDimensions().width;
   const height = useWindowDimensions().height;
-  const [studentList, setStudentList] = useState([]);
+  const [classList, setClassList] = useState([]);
 
   //컴포넌트를 처음 로딩할 때 호출
   useEffect(() => {
-    //파라미터로 studentList를 받아올 때와 아닐 때 구분
-    if (route.params.studentList) {
-      setStudentList(route.params.studentList);
-    } else {
-      attByClass();
-    }
-    console.log(route.params.item);
+    attGetClass(route.params.item.courses.courseId);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 정정하기 버튼, 그 버튼을 눌렀을 때
@@ -93,27 +87,27 @@ const AttendanceWeek = ({navigation, route}) => {
     </>
   );
 
-  async function attByClass() {
+  async function attGetClass(classId) {
     let api = await Api();
     api
-      .get(info.apiList.attByClass + '/207')
+      .get(info.apiList.attGetClass + '/' + classId)
       .then((res) => {
-        setStudentList(res.data);
+        setClassList(res.data);
       })
       .catch((error) => {
         //에러 처리, 토큰 재발급을 위해 error, function을 넘겨줌
-        ErrorHandler(error, attByClass);
+        ErrorHandler(error, attGetClass(classId));
       });
   }
 
   const rowData1 = [];
   const rowData2 = [];
-  for (let i = 0; i < studentList.length; i += 1) {
+  for (let i = 0; i < classList.length; i += 1) {
     let tempData1 = [];
     let tempData2 = [];
 
-    tempData1.push('0');
-    tempData1.push('0');
+    tempData1.push(classList[i].week + '주차');
+    tempData1.push(classList[i].round + '차시');
     tempData1.push('0');
     tempData1.push('0');
     tempData1.push('0');
@@ -128,7 +122,7 @@ const AttendanceWeek = ({navigation, route}) => {
   // height 길이 조절하는 부분
   const heightArr = [];
 
-  for (let i = 0; i < studentList.length; i += 1) {
+  for (let i = 0; i < classList.length; i += 1) {
     heightArr.push(50); // 기본 높이
   }
 
@@ -150,13 +144,13 @@ const AttendanceWeek = ({navigation, route}) => {
             <Row
               data={table.tableHead}
               widthArr={[
-                width / 7,
-                width / 7,
-                width / 7,
-                width / 7,
-                width / 7,
-                width / 7,
-                width / 7,
+                (width * 5) / 31,
+                (width * 5) / 31,
+                (width * 4) / 31,
+                (width * 4) / 31,
+                (width * 4) / 31,
+                (width * 4) / 31,
+                (width * 5) / 31,
               ]}
               style={styles.head}
               textStyle={styles.text}
@@ -175,11 +169,11 @@ const AttendanceWeek = ({navigation, route}) => {
                       key={index}
                       data={data}
                       widthArr={[
-                        width / 7,
-                        width / 7,
-                        width / 7,
-                        width / 7,
-                        width / 7,
+                        (width * 5) / 31,
+                        (width * 5) / 31,
+                        (width * 4) / 31,
+                        (width * 4) / 31,
+                        (width * 4) / 31,
                       ]}
                       style={styles.row}
                       textStyle={
@@ -193,7 +187,7 @@ const AttendanceWeek = ({navigation, route}) => {
                     <Row
                       key={index}
                       data={data}
-                      widthArr={[width / 7, width / 7]}
+                      widthArr={[(width * 4) / 31, (width * 5) / 31]}
                       style={styles.row}
                       textStyle={
                         data[0] === '결석' ? styles.absentText : styles.text
