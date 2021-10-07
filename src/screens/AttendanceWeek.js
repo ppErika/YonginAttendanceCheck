@@ -70,10 +70,12 @@ const AttendanceWeek = ({navigation, route}) => {
   const width = useWindowDimensions().width;
   const height = useWindowDimensions().height;
   const [classList, setClassList] = useState([]);
+  const [classDetailList, setClassDetailList] = useState([]);
 
   //컴포넌트를 처음 로딩할 때 호출
   useEffect(() => {
-    attGetClass(route.params.item.courses.courseId);
+    setClassList(route.params.classList);
+    setClassDetailList(route.params.classDetailList);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 정정하기 버튼, 그 버튼을 눌렀을 때
@@ -87,19 +89,6 @@ const AttendanceWeek = ({navigation, route}) => {
     </>
   );
 
-  async function attGetClass(classId) {
-    let api = await Api();
-    api
-      .get(info.apiList.attGetClass + '/' + classId)
-      .then((res) => {
-        setClassList(res.data);
-      })
-      .catch((error) => {
-        //에러 처리, 토큰 재발급을 위해 error, function을 넘겨줌
-        ErrorHandler(error, attGetClass(classId));
-      });
-  }
-
   const rowData1 = [];
   const rowData2 = [];
   for (let i = 0; i < classList.length; i += 1) {
@@ -108,10 +97,10 @@ const AttendanceWeek = ({navigation, route}) => {
 
     tempData1.push(classList[i].week + '주차');
     tempData1.push(classList[i].round + '차시');
+    tempData1.push(classDetailList[i][0].atdId);
+    //console.log(detailList[i][0]);
     tempData1.push('0');
     tempData1.push('0');
-    tempData1.push('0');
-
     tempData2.push('0');
     tempData2.push(element(i));
 

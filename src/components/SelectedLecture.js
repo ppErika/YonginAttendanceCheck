@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
+  Alert,
   Image,
   View,
   StyleSheet,
@@ -9,6 +10,8 @@ import {
 import styled from 'styled-components/native';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
+import {info, Api} from '../api/BaseApi';
+import {ErrorHandler} from '../api/ErrorHandler';
 
 const Container = styled.View`
   width: ${({width}) => width - 40}px;
@@ -68,6 +71,53 @@ const styles = StyleSheet.create({
 
 const SelectedLecture = ({navigation, item, onPress}) => {
   const width = useWindowDimensions().width;
+  let classList = [];
+  let classDetailList = [];
+
+  //컴포넌트를 처음 로딩할 때 호출
+  useEffect(() => {
+    attGetClass(item.courses.courseId);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  async function attGetClass(attId) {
+    let api = await Api();
+    api
+      .get(info.apiList.attGetClass + '/' + attId)
+      .then(async (res) => {
+        classList = res.data;
+        for (let i = 0; i < res.data.length; i++) {
+          //console.log(res.data[i].classId);
+          await attByClass(i, res.data[i].classId);
+        }
+      })
+      .catch((error) => {
+        //에러 처리, 토큰 재발급을 위해 error, function을 넘겨줌
+        ErrorHandler(error, attGetClass(attId));
+      });
+  }
+
+  async function attByClass(seq, classId) {
+    let api = await Api();
+    api
+      .get(info.apiList.attByClass + '/' + classId)
+      .then((res) => {
+        classDetailList[seq] = res.data;
+      })
+      .catch((error) => {
+        //에러 처리, 토큰 재발급을 위해 error, function을 넘겨줌
+        ErrorHandler(error, attByClass(seq, classId));
+      });
+  }
+
+  async function attWeek() {
+    //주차별 출석 현황 데이터 로딩이 끝나지 않은 상태라면 Alert창을 띄움
+    if (classList.length === classDetailList.length) {
+      navigation.navigate('AttendanceWeek', {classList, classDetailList});
+    } else {
+      Alert.alert('데이터를 불러오는 중입니다.');
+    }
+  }
+
   return (
     <Container width={width}>
       <InfoBox onPress={onPress}>
@@ -86,8 +136,7 @@ const SelectedLecture = ({navigation, item, onPress}) => {
         </EtcText>
       </InfoBox>
       <View style={styles.lineStyle} />
-      <TouchableOpacity
-        onPress={() => navigation.navigate('AttendanceWeek', {item})}>
+      <TouchableOpacity onPress={() => attWeek()}>
         <TabBox>
           <TitleText>주차별 출석현황</TitleText>
           <Image
