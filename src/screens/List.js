@@ -72,8 +72,8 @@ const List = ({navigation, route}) => {
   const height = useWindowDimensions().height;
   const [searchQuery, setSearchQuery] = useState('');
   const onChangeSearch = (query) => setSearchQuery(query);
-  const requestList = route.params.states;
-  const requestStd = route.params.studentItems;
+  //const requestList = route.params.states;
+  const requestStd = route.params.studentList;
   const [personnel, setPersonnel] = useState([0, 0, 0]); // 결석(0), 출석(1), 지각(2) 순
 
   // 정정하기 버튼, 그 버튼을 눌렀을 때
@@ -166,7 +166,7 @@ const List = ({navigation, route}) => {
   // row
   const titleData = [];
   const rowData = [];
-  for (let i = 0; i < requestList.length; i += 1) {
+  for (let i = 0; i < requestStd.length; i += 1) {
     const tempStateData = [];
 
     for (let j = 0; j < 3; j += 1) {
@@ -180,7 +180,7 @@ const List = ({navigation, route}) => {
             ')',
         );
       } else if (j === 1) {
-        switch (requestList[i]) {
+        switch (requestStd[i].status) {
           case 0:
             tempStateData.push('결석');
             break;
@@ -204,7 +204,7 @@ const List = ({navigation, route}) => {
   const heightArr0 = [];
   const heightArr1 = [];
 
-  for (let i = 0; i < requestList.length; i += 1) {
+  for (let i = 0; i < requestStd.length; i += 1) {
     for (let j = 0; j < 2; j += 1) {
       heightArr0.push(15); // 학과 높이
       heightArr0.push(35); // 이름(학번) 높이
