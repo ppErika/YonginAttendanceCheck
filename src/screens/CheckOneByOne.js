@@ -102,18 +102,20 @@ const CheckOneByOne = ({navigation, route}) => {
   const [seq, setSeq] = useState(1); // 현재 번호
   const [quota, setQuota] = useState(0); // 총 인원
   const progress = seq / quota;
-  const [states, setStates] = useState([]);
+  //const [states, setStates] = useState([]);
   const [studentItems, setStudentItems] = useState([]);
 
   // 출결 체크 true == 출석
   function ChangeAttendanceStates(i, bool) {
-    var arrayCopy = [...states];
+    var arrayCopy = [...studentItems];
     if (bool === true) {
-      arrayCopy[i] = 1;
+      arrayCopy[i].status = 1;
     } else {
-      arrayCopy[i] = 0;
+      arrayCopy[i].status = 0;
     }
-    setStates(arrayCopy);
+    setStudentItems(arrayCopy);
+    console.log(studentItems[i].user.userName);
+    console.log(studentItems[i].status);
   }
 
   async function attByClass() {
@@ -227,7 +229,26 @@ const CheckOneByOne = ({navigation, route}) => {
           )}
         </Box>
         <ButtonBox width={width}>
-          {states[seq - 1] === 1 ? (
+          {Object.keys(studentItems).length === 0 ? (
+            <>
+              <AttendanceButton
+                title="결석"
+                style={{marginRight: 8, backgroundColor: Colors.inactiveGray}}
+                onPress={() => {
+                  seq === quota ? null : setSeq(seq + 1);
+                  ChangeAttendanceStates(seq - 1, false);
+                }}
+              />
+              <AttendanceButton
+                title="출석"
+                style={{marginRight: 8, backgroundColor: Colors.inactiveGray}}
+                onPress={() => {
+                  seq === quota ? null : setSeq(seq + 1);
+                  ChangeAttendanceStates(seq - 1, true);
+                }}
+              />
+            </>
+          ) : studentItems[seq - 1].status === 1 ? (
             <>
               <AttendanceButton
                 title="결석"
@@ -274,7 +295,7 @@ const CheckOneByOne = ({navigation, route}) => {
           style={{backgroundColor: Colors.activeGreen}}
           onPress={() => {
             // Alert.alert('출석이 저장되었습니다.' + states);
-            navigation.navigate('List', {item, states, studentItems});
+            navigation.navigate('List', {item, studentItems});
           }}
         />
       ) : (
