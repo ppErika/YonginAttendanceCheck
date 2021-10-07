@@ -97,11 +97,20 @@ const AttendanceWeek = ({navigation, route}) => {
 
     tempData1.push(classList[i].week + '주차');
     tempData1.push(classList[i].round + '차시');
-    tempData1.push(classDetailList[i][0].atdId);
-    //console.log(detailList[i][0]);
-    tempData1.push('0');
-    tempData1.push('0');
-    tempData2.push('0');
+    tempData1.push(classDetailList[i].length);
+    let attTemp = [0, 0, 0];
+    for (let j = 0; j < classDetailList[i].length; j++) {
+      if (classDetailList[i][j].status === '0') {
+        attTemp[0]++;
+      } else if (classDetailList[i][j].status === '1') {
+        attTemp[1]++;
+      } else {
+        attTemp[2]++;
+      }
+    }
+    tempData1.push(attTemp[1] + '');
+    tempData1.push(attTemp[2] + '');
+    tempData2.push(attTemp[0] + '');
     tempData2.push(element(i));
 
     rowData1.push(tempData1);
@@ -165,9 +174,7 @@ const AttendanceWeek = ({navigation, route}) => {
                         (width * 4) / 31,
                       ]}
                       style={styles.row}
-                      textStyle={
-                        data[0] === '결석' ? styles.absentText : styles.text
-                      }
+                      textStyle={styles.text}
                     />
                   ))}
                 </Table>
@@ -179,7 +186,7 @@ const AttendanceWeek = ({navigation, route}) => {
                       widthArr={[(width * 4) / 31, (width * 5) / 31]}
                       style={styles.row}
                       textStyle={
-                        data[0] === '결석' ? styles.absentText : styles.text
+                        data[0] !== '0' ? styles.absentText : styles.text
                       }
                     />
                   ))}
