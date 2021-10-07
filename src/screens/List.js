@@ -73,7 +73,15 @@ const List = ({navigation, route}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const onChangeSearch = (query) => setSearchQuery(query);
   //const requestList = route.params.states;
-  const studentList = route.params.studentList;
+  const [studentList, setStudentList] = useState([]);
+
+  //컴포넌트를 처음 로딩할 때 호출
+  useEffect(() => {
+    //파라미터로 studentList를 받아올 때
+    if (route.params.studentList) {
+      setStudentList(route.params.studentList);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 정정하기 버튼, 그 버튼을 눌렀을 때
   const element = (value) => (
@@ -97,6 +105,11 @@ const List = ({navigation, route}) => {
                     text: '출석으로 변경',
                     onPress: () => {
                       table.tableData[value][0] = '출석';
+
+                      var arrayCopy = [...studentList];
+                      arrayCopy[value].status = 1;
+                      setStudentList(arrayCopy);
+
                       Alert.alert('출석 처리 완료');
                     },
                     style: 'cancel', // ios only
@@ -116,6 +129,11 @@ const List = ({navigation, route}) => {
                     text: '결석으로 변경',
                     onPress: () => {
                       table.tableData[value][0] = '결석';
+
+                      var arrayCopy = [...studentList];
+                      arrayCopy[value].status = 0;
+                      setStudentList(arrayCopy);
+
                       Alert.alert('결석 처리 완료');
                     },
                     style: 'cancel',
