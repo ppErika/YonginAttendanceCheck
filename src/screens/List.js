@@ -200,45 +200,6 @@ const List = ({navigation, route}) => {
     rowData.push(tempStateData);
   }
 
-  // col
-  // const colData0 = []; // 학과/이름(학번)
-  // const colData1 = []; // 출결
-  // const colData2 = []; // 버튼이 들어가는 부분
-  //
-  // for (let i = 0; i < 3; i += 1) {
-  //   if (i === 0) {
-  //     for (let j = 0; j < requestList.length; j += 1) {
-  //       colData0.push(requestStd[j].departmentId.departmentName);
-  //       colData0.push(
-  //         requestStd[j].userName + '(' + requestStd[j].userId + ')',
-  //       );
-  //     }
-  //   } else {
-  //     for (let j = 0; j < requestList.length; j += 1) {
-  //       if (i === 1) {
-  //         switch (requestList[j]) {
-  //           case 0:
-  //             colData1.push('결석');
-  //             break;
-  //           case 1:
-  //             colData1.push('출석');
-  //             break;
-  //           default:
-  //             colData1.pust(''); // 입력값이 없을 경우
-  //         }
-  //       } else {
-  //         colData2.push(element(j));
-  //       }
-  //     }
-  //   }
-  // }
-
-  // const tableData = {
-  //   stdInfo: colData0, // 학과/이름(학번)
-  //   stateInfo: colData1, // 출결
-  //   btnInfo: colData2, // 버튼
-  // };
-
   // height 길이 조절하는 부분
   const heightArr0 = [];
   const heightArr1 = [];
@@ -256,10 +217,6 @@ const List = ({navigation, route}) => {
     tableTitle: titleData, // 학과/이름(학번)
     tableData: rowData, // 출결과 버튼
   };
-
-  // 추가 해야 할 부분
-  // table의 값이 변경이 될 때마다 화면을 리프레시 하고 싶다
-  // useEffect(() => {}, []);
 
   return (
     <>
@@ -307,28 +264,6 @@ const List = ({navigation, route}) => {
                     styles.infoText
                   }
                 />
-                {/* <Table>
-                  {table.tableTitle
-                    .filter((data) => {
-                      if (searchQuery.length === 0) {
-                        return data;
-                      } else if (
-                        data.toLowerCase().includes(searchQuery.toLowerCase())
-                      ) {
-                        console.log(data);
-                        return data;
-                      }
-                    })
-                    .map((rowData, index) => (
-                      <Row
-                        key={index}
-                        data={rowData}
-                        widthArr={[width / 2]}
-                        style={styles.row}
-                        textStyle={styles.infoText} // 수정해야할 부분 (학과/이름(학번) style)
-                      />
-                    ))}
-                </Table> */}
                 <Table>
                   {table.tableData.map((rowData, index) => (
                     <Row
@@ -343,81 +278,7 @@ const List = ({navigation, route}) => {
                   ))}
                 </Table>
               </TableWrapper>
-              {/* {table.tableData
-                .filter((rowData) => {
-                  if (searchQuery.length === 0) {
-                    return rowData;
-                  } else if (
-                    rowData[0].toLowerCase().includes(searchQuery.toLowerCase())
-                  ) {
-                    return rowData;
-                  }
-                })
-                .map((rowData, index) => {
-                  return (
-                    <Row
-                      key={index}
-                      data={rowData}
-                      widthArr={table.widthArr}
-                      style={styles.row}
-                      textStyle={
-                        rowData[1] === '결석' ? styles.absentText : styles.text
-                      }
-                    />
-                  );
-                })} */}
             </Table>
-            {/* <Table
-              style={{flexDirection: 'row'}}
-              borderStyle={{
-                borderWidth: 1,
-                borderColor: Colors.backgroundGray,
-              }}>
-              {tableData.stdInfo
-                .filter((stdInfo) => {
-                  if (searchQuery.length === 0) {
-                    return stdInfo;
-                  } else if (
-                    stdInfo.toLowerCase().includes(searchQuery.toLowerCase())
-                  ) {
-                    return stdInfo;
-                  }
-                })
-                .map((stdInfo, index) => {
-                  return (
-                    <TableWrapper style={{width: width, flexDirection: 'row'}}>
-                      <Col
-                        data={tableData.stdInfo}
-                        heightArr={heightArr0}
-                        width={width / 2}
-                        textStyle={
-                          // 수정해야할 부분 - 전공, 이름(학번) 스타일 각각 적용하기
-                          heightArr0 % 2 === 0
-                            ? styles.majorText
-                            : styles.stdText
-                        }
-                      />
-                      <Col
-                        data={tableData.stateInfo}
-                        heightArr={heightArr1}
-                        width={width / 6}
-                        textStyle={
-                          // 수정해야할 부분 - 결석 textStyle 적용하기
-                          tableData.stateInfo === '결석'
-                            ? styles.absentText
-                            : styles.text
-                        }
-                      />
-                      <Col
-                        data={tableData.btnInfo}
-                        heightArr={heightArr1}
-                        width={width / 3}
-                        textStyle={styles.text}
-                      />
-                    </TableWrapper>
-                  );
-                })}
-            </Table> */}
           </ScrollView>
         </View>
       </Container>
