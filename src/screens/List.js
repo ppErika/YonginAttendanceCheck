@@ -73,8 +73,7 @@ const List = ({navigation, route}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const onChangeSearch = (query) => setSearchQuery(query);
   //const requestList = route.params.states;
-  const requestStd = route.params.studentList;
-  const [personnel, setPersonnel] = useState([0, 0, 0]); // 결석(0), 출석(1), 지각(2) 순
+  const studentList = route.params.studentList;
 
   // 정정하기 버튼, 그 버튼을 눌렀을 때
   const element = (value) => (
@@ -150,61 +149,70 @@ const List = ({navigation, route}) => {
   );
 
   // 출석, 결석, 지각 인원 체크
-  function CountPersonnel() {
-    var tempArr = [0, 0, 0];
+  function Count() {
+    var countArr = [0, 0, 0];
     table.tableData.map((data, i) => {
       data[0] === '결석'
-        ? (tempArr[0] += 1)
+        ? (countArr[0] += 1)
         : data[0] === '출석'
-        ? (tempArr[1] += 1)
-        : (tempArr[2] += 1);
+        ? (countArr[1] += 1)
+        : (countArr[2] += 1);
     });
-    setPersonnel(tempArr);
+
+    Alert.alert(
+      '저장완료',
+      '총원: ' +
+        table.tableData.length +
+        '\n출석: ' +
+        countArr[1] +
+        ' 결석: ' +
+        countArr[0] +
+        ' 지각: ' +
+        countArr[2],
+    );
   }
 
-  // 백 연결해서 length와 학생데이터 부분 수정해야 함 (현재는 List 단독페이지 들어갔을 때
-  // row
   const titleData = [];
   const rowData = [];
-  for (let i = 0; i < requestStd.length; i += 1) {
-    const tempStateData = [];
+  for (let i = 0; i < studentList.length; i += 1) {
+    const tempStatusData = [];
 
     for (let j = 0; j < 3; j += 1) {
       if (j === 0) {
         titleData.push(
-          requestStd[i].user.departmentId.departmentName +
+          studentList[i].user.departmentId.departmentName +
             '\n' +
-            requestStd[i].user.userName +
+            studentList[i].user.userName +
             '(' +
-            requestStd[i].user.userId +
+            studentList[i].user.userId +
             ')',
         );
       } else if (j === 1) {
-        switch (requestStd[i].status) {
+        switch (studentList[i].status) {
           case 0:
-            tempStateData.push('결석');
+            tempStatusData.push('결석');
             break;
           case 1:
-            tempStateData.push('출석');
+            tempStatusData.push('출석');
             break;
           case 2:
-            tempStateData.push('지각');
+            tempStatusData.push('지각');
             break;
           default:
-            tempStateData.push('');
+            tempStatusData.push('');
         }
       } else {
-        tempStateData.push(element(i));
+        tempStatusData.push(element(i));
       }
     }
-    rowData.push(tempStateData);
+    rowData.push(tempStatusData);
   }
 
   // height 길이 조절하는 부분
   const heightArr0 = [];
   const heightArr1 = [];
 
-  for (let i = 0; i < requestStd.length; i += 1) {
+  for (let i = 0; i < studentList.length; i += 1) {
     for (let j = 0; j < 2; j += 1) {
       heightArr0.push(15); // 학과 높이
       heightArr0.push(35); // 이름(학번) 높이
@@ -265,14 +273,14 @@ const List = ({navigation, route}) => {
                   }
                 />
                 <Table>
-                  {table.tableData.map((rowData, index) => (
+                  {table.tableData.map((data, index) => (
                     <Row
                       key={index}
-                      data={rowData}
+                      data={data}
                       widthArr={[width / 6, width / 3]}
                       style={styles.row}
                       textStyle={
-                        rowData[0] === '결석' ? styles.absentText : styles.text
+                        data[0] === '결석' ? styles.absentText : styles.text
                       }
                     />
                   ))}
@@ -286,18 +294,7 @@ const List = ({navigation, route}) => {
         title="완료하기"
         style={{backgroundColor: Colors.activeGreen}}
         onPress={() => {
-          CountPersonnel();
-          Alert.alert(
-            '저장완료',
-            '총원: ' +
-              table.tableData.length +
-              '\n출석: ' +
-              personnel[1] +
-              ' 결석: ' +
-              personnel[0] +
-              ' 지각: ' +
-              personnel[2],
-          );
+          Count();
         }}
       />
     </>
