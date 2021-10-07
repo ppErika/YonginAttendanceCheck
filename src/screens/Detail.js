@@ -18,7 +18,7 @@ const Detail = ({navigation, route}) => {
   const item = route.params.item;
   return (
     <Container>
-      <SelectedLecture item={route.params.item} />
+      <SelectedLecture navigation={navigation} item={route.params.item} />
       <ButtonBox>
         <GreenButton
           title="한명씩 출석"

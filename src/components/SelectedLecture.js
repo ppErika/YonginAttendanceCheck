@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SelectedLecture = ({item, onPress}) => {
+const SelectedLecture = ({navigation, item, onPress}) => {
   const width = useWindowDimensions().width;
   return (
     <Container width={width}>
@@ -86,7 +86,8 @@ const SelectedLecture = ({item, onPress}) => {
         </EtcText>
       </InfoBox>
       <View style={styles.lineStyle} />
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('AttendanceWeek', {item})}>
         <TabBox>
           <TitleText>주차별 출석현황</TitleText>
           <Image

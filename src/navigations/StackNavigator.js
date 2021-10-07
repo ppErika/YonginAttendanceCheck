@@ -7,6 +7,7 @@ import {
   AxiosSample,
   CheckOneByOne,
   List,
+  AttendanceWeek,
 } from '../screens';
 import {Colors} from '../assets/colors/Colors';
 import Header from '../components/Header';
@@ -94,6 +95,7 @@ const StackNavigator = () => {
           ),
         })}
       />
+
       <Stack.Screen
         name="CheckOneByOne"
         component={CheckOneByOne}
@@ -116,6 +118,7 @@ const StackNavigator = () => {
           ),
         })}
       />
+
       <Stack.Screen
         name="List"
         component={List}
@@ -129,6 +132,27 @@ const StackNavigator = () => {
           headerTitle: () => (
             <Header title={route.params.item.courses.courseName} />
           ),
+          headerRight: () => (
+            <Icon
+              name="menu"
+              size={35}
+              onPress={() => navigation.openDrawer()}
+            />
+          ),
+        })}
+      />
+
+      <Stack.Screen
+        name="AttendanceWeek"
+        component={AttendanceWeek}
+        options={({route, navigation}) => ({
+          headerStyle: {
+            backgroundColor: Colors.backgroundGray,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTitleAlign: 'center',
+          headerTitle: () => <Header title="주차별 출석 현황" />,
           headerRight: () => (
             <Icon
               name="menu"
