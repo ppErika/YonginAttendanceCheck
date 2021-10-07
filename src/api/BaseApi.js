@@ -11,6 +11,11 @@ export const info = {
     refresh: '/api/auth/token',
     logout: '/api/auth/logout',
     getAttendance: '/api/attendance',
+    createClass: '/api/class',
+    attUpdate: '/api/attendance/updates',
+    attGetClass: '/api/class',
+    attUser: '/api/attendance/user',
+    attByClass: '/api/attendance/byclass',
   },
 };
 

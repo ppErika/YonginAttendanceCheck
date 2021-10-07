@@ -57,7 +57,7 @@ const AxiosSample = ({navigation}) => {
     };
     let api = await Api();
     api
-      .post('/api/class', data)
+      .post(info.apiList.createClass, data)
       .then((res) => {
         console.log('create class\n');
         console.log(res.data);
@@ -82,7 +82,7 @@ const AxiosSample = ({navigation}) => {
     ];
     let api = await Api();
     api
-      .patch('/api/attendance/updates', data)
+      .patch(info.apiList.attUpdate, data)
       .then((res) => {
         console.log('att update\n');
         console.log(res.status);
@@ -97,7 +97,7 @@ const AxiosSample = ({navigation}) => {
   async function attGetClass() {
     let api = await Api();
     api
-      .get('/api/class/20212550033F72')
+      .get(info.apiList.attGetClass + '/20212550033F72')
       .then((res) => {
         console.log('att get class\n');
         console.log(res.data);
@@ -112,7 +112,7 @@ const AxiosSample = ({navigation}) => {
   async function attUser() {
     let api = await Api();
     api
-      .get('/api/attendance/user/20212550033F72')
+      .get(info.apiList.attUser + '/20212550033F72')
       .then((res) => {
         console.log('att user\n');
         console.log(res.data);
@@ -127,7 +127,7 @@ const AxiosSample = ({navigation}) => {
   async function attByClass() {
     let api = await Api();
     api
-      .get('/api/attendance/byclass/207')
+      .get(info.apiList.attByClass + '/207')
       .then((res) => {
         console.log('att by class\n');
         console.log(res.data);
