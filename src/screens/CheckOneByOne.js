@@ -102,21 +102,18 @@ const CheckOneByOne = ({navigation, route}) => {
   const [seq, setSeq] = useState(1); // 현재 번호
   const [quota, setQuota] = useState(0); // 총 인원
   const progress = seq / quota;
-  const [states, setStates] = useState([1, 1, 1, 1, 1, 1]);
+  const [states, setStates] = useState([]);
   const seqq = seq - 1;
   const [studentItems, setStudentItems] = useState([]);
 
-  // 출석으로 체크 (1)
-  function ChangeAttendanceStates(i) {
+  // 출결 체크 true == 출석
+  function ChangeAttendanceStates(i, bool) {
     var arrayCopy = [...states];
-    arrayCopy[i] = 1;
-    setStates(arrayCopy);
-  }
-
-  // 결석으로 체크 (0)
-  function ChangeAbsentStates(i) {
-    var arrayCopy = [...states];
-    arrayCopy[i] = 0;
+    if (bool === true) {
+      arrayCopy[i] = 1;
+    } else {
+      arrayCopy[i] = 0;
+    }
     setStates(arrayCopy);
   }
 
@@ -135,7 +132,6 @@ const CheckOneByOne = ({navigation, route}) => {
   }
 
   useEffect(() => {
-    //getAttendance();
     attByClass();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -239,7 +235,7 @@ const CheckOneByOne = ({navigation, route}) => {
                 style={{marginRight: 8, backgroundColor: Colors.inactiveGray}}
                 onPress={() => {
                   seq === quota ? null : setSeq(seq + 1);
-                  ChangeAbsentStates(seq - 1);
+                  ChangeAttendanceStates(seq - 1, false);
                 }}
               />
               <AttendanceButton
@@ -247,7 +243,7 @@ const CheckOneByOne = ({navigation, route}) => {
                 style={{backgroundColor: Colors.attendanceGreen}}
                 onPress={() => {
                   seq === quota ? null : setSeq(seq + 1);
-                  ChangeAttendanceStates(seq - 1);
+                  ChangeAttendanceStates(seq - 1, true);
                 }}
               />
             </>
@@ -258,7 +254,7 @@ const CheckOneByOne = ({navigation, route}) => {
                 style={{marginRight: 8, backgroundColor: Colors.absentRed}}
                 onPress={() => {
                   seq === quota ? null : setSeq(seq + 1);
-                  ChangeAbsentStates(seq - 1);
+                  ChangeAttendanceStates(seq - 1, false);
                 }}
               />
               <AttendanceButton
@@ -266,7 +262,7 @@ const CheckOneByOne = ({navigation, route}) => {
                 style={{backgroundColor: Colors.inactiveGray}}
                 onPress={() => {
                   seq === quota ? null : setSeq(seq + 1);
-                  ChangeAttendanceStates(seq - 1);
+                  ChangeAttendanceStates(seq - 1, true);
                 }}
               />
             </>
