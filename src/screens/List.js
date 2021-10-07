@@ -241,35 +241,28 @@ const List = ({navigation, route}) => {
   const rowData = [];
   for (let i = 0; i < studentList.length; i += 1) {
     const tempStatusData = [];
-
-    for (let j = 0; j < 3; j += 1) {
-      if (j === 0) {
-        titleData.push(
-          studentList[i].user.departmentId.departmentName +
-            '\n' +
-            studentList[i].user.userName +
-            '(' +
-            studentList[i].user.userId +
-            ')',
-        );
-      } else if (j === 1) {
-        switch (studentList[i].status) {
-          case '0':
-            tempStatusData.push('결석');
-            break;
-          case '1':
-            tempStatusData.push('출석');
-            break;
-          case '2':
-            tempStatusData.push('지각');
-            break;
-          default:
-            tempStatusData.push('');
-        }
-      } else {
-        tempStatusData.push(element(i));
-      }
+    titleData.push(
+      studentList[i].user.departmentId.departmentName +
+        '\n' +
+        studentList[i].user.userName +
+        '(' +
+        studentList[i].user.userId +
+        ')',
+    );
+    switch (studentList[i].status) {
+      case '0':
+        tempStatusData.push('결석');
+        break;
+      case '1':
+        tempStatusData.push('출석');
+        break;
+      case '2':
+        tempStatusData.push('지각');
+        break;
+      default:
+        tempStatusData.push('');
     }
+    tempStatusData.push(element(i));
     rowData.push(tempStatusData);
   }
 
