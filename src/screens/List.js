@@ -172,11 +172,11 @@ const List = ({navigation, route}) => {
     for (let j = 0; j < 3; j += 1) {
       if (j === 0) {
         titleData.push(
-          requestStd[i].departmentId.departmentName +
+          requestStd[i].user.departmentId.departmentName +
             '\n' +
-            requestStd[i].userName +
+            requestStd[i].user.userName +
             '(' +
-            requestStd[i].userId +
+            requestStd[i].user.userId +
             ')',
         );
       } else if (j === 1) {

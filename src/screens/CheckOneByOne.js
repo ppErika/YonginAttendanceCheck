@@ -120,32 +120,23 @@ const CheckOneByOne = ({navigation, route}) => {
     setStates(arrayCopy);
   }
 
-  // quota 만큼 states 배열길이 늘려주기
-  function AddStates() {
-    var arrayCopy = [...states];
-    studentItems.map(arrayCopy.unshift(0));
-    setStates(arrayCopy);
-  }
-
-  async function getAttendance() {
+  async function attByClass() {
     let api = await Api();
     api
-      .get(
-        info.apiList.getAttendance + '/' + route.params.item.courses.courseId,
-      )
+      .get(info.apiList.attByClass + '/207')
       .then((res) => {
-        //console.log(res.data);
         setStudentItems(res.data);
         setQuota(res.data.length);
       })
       .catch((error) => {
-        ErrorHandler(error, getAttendance);
+        //에러 처리, 토큰 재발급을 위해 error, function을 넘겨줌
+        ErrorHandler(error, attByClass);
       });
   }
 
   useEffect(() => {
-    //AddStates();
-    getAttendance();
+    //getAttendance();
+    attByClass();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -209,7 +200,7 @@ const CheckOneByOne = ({navigation, route}) => {
                 }}>
                 {Object.keys(studentItems).length === 0
                   ? '학생 데이터가 없습니다.'
-                  : studentItems[seq - 1].userName}
+                  : studentItems[seq - 1].user.userName}
               </Text>
               <Text
                 style={{
@@ -220,7 +211,7 @@ const CheckOneByOne = ({navigation, route}) => {
                 }}>
                 {Object.keys(studentItems).length === 0
                   ? '학생 데이터가 없습니다.'
-                  : studentItems[seq - 1].userNo}
+                  : studentItems[seq - 1].user.userId}
               </Text>
             </InfoBox>
           </Card>
