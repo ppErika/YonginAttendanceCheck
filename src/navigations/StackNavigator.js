@@ -8,6 +8,8 @@ import {
   CheckOneByOne,
   List,
   AttendanceWeek,
+  AttendanceUser,
+  AttendanceUserDetail,
 } from '../screens';
 import {Colors} from '../assets/colors/Colors';
 import Header from '../components/Header';
@@ -153,6 +155,48 @@ const StackNavigator = () => {
           },
           headerTitleAlign: 'center',
           headerTitle: () => <Header title="주차별 출석 현황" />,
+          headerRight: () => (
+            <Icon
+              name="menu"
+              size={35}
+              onPress={() => navigation.openDrawer()}
+            />
+          ),
+        })}
+      />
+
+      <Stack.Screen
+        name="AttendanceUser"
+        component={AttendanceUser}
+        options={({route, navigation}) => ({
+          headerStyle: {
+            backgroundColor: Colors.backgroundGray,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTitleAlign: 'center',
+          headerTitle: () => <Header title="학생별 출석 현황" />,
+          headerRight: () => (
+            <Icon
+              name="menu"
+              size={35}
+              onPress={() => navigation.openDrawer()}
+            />
+          ),
+        })}
+      />
+
+      <Stack.Screen
+        name="AttendanceUserDetail"
+        component={AttendanceUserDetail}
+        options={({route, navigation}) => ({
+          headerStyle: {
+            backgroundColor: Colors.backgroundGray,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+          headerTitleAlign: 'center',
+          headerTitle: () => <Header title="학생 이름 출석 현황" />,
           headerRight: () => (
             <Icon
               name="menu"

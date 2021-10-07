@@ -97,7 +97,8 @@ const SelectedLecture = ({navigation, item, onPress}) => {
         </TabBox>
       </TouchableOpacity>
       <View style={styles.lineStyle} />
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('AttendanceUser', {item})}>
         <TabBox>
           <TitleText>학생별 출석현황</TitleText>
           <Image
