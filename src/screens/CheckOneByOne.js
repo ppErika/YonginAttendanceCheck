@@ -103,7 +103,6 @@ const CheckOneByOne = ({navigation, route}) => {
   const [quota, setQuota] = useState(0); // 총 인원
   const progress = seq / quota;
   const [states, setStates] = useState([]);
-  const seqq = seq - 1;
   const [studentItems, setStudentItems] = useState([]);
 
   // 출결 체크 true == 출석
@@ -228,7 +227,7 @@ const CheckOneByOne = ({navigation, route}) => {
           )}
         </Box>
         <ButtonBox width={width}>
-          {states[seqq] === 1 ? (
+          {states[seq - 1] === 1 ? (
             <>
               <AttendanceButton
                 title="결석"

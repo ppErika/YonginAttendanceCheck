@@ -191,7 +191,7 @@ const List = ({navigation, route}) => {
             tempStateData.push('지각');
             break;
           default:
-            tempStateData.pust('');
+            tempStateData.push('');
         }
       } else {
         tempStateData.push(element(i));
