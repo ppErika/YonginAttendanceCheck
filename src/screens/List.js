@@ -14,6 +14,8 @@ import styled from 'styled-components/native';
 import SaveButton from '../components/SaveButton';
 import {Fonts} from '../assets/fonts/Fonts';
 import {Colors} from '../assets/colors/Colors';
+import {info, Api} from '../api/BaseApi';
+import {ErrorHandler} from '../api/ErrorHandler';
 
 const Container = styled.View`
   align-items: center;
@@ -82,91 +84,6 @@ const List = ({navigation, route}) => {
       setStudentList(route.params.studentList);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  //출결정보를 수정할 때 백엔드에 보낼 데이터 수정
-  function setStatus(seq, bool) {
-    var arrayCopy = [...studentList];
-    bool ? (arrayCopy[seq].status = 1) : (arrayCopy[seq].status = 0);
-    setStudentList(arrayCopy);
-  }
-
-  // 출석, 결석, 지각 인원 체크
-  function count() {
-    var countArr = [0, 0, 0];
-    table.tableData.map((data, i) => {
-      data[0] === '결석'
-        ? (countArr[0] += 1)
-        : data[0] === '출석'
-        ? (countArr[1] += 1)
-        : (countArr[2] += 1);
-    });
-
-    Alert.alert(
-      '저장완료',
-      '총원: ' +
-        table.tableData.length +
-        '\n출석: ' +
-        countArr[1] +
-        ' 결석: ' +
-        countArr[0] +
-        ' 지각: ' +
-        countArr[2],
-    );
-  }
-
-  const titleData = [];
-  const rowData = [];
-  for (let i = 0; i < studentList.length; i += 1) {
-    const tempStatusData = [];
-
-    for (let j = 0; j < 3; j += 1) {
-      if (j === 0) {
-        titleData.push(
-          studentList[i].user.departmentId.departmentName +
-            '\n' +
-            studentList[i].user.userName +
-            '(' +
-            studentList[i].user.userId +
-            ')',
-        );
-      } else if (j === 1) {
-        switch (studentList[i].status) {
-          case 0:
-            tempStatusData.push('결석');
-            break;
-          case 1:
-            tempStatusData.push('출석');
-            break;
-          case 2:
-            tempStatusData.push('지각');
-            break;
-          default:
-            tempStatusData.push('');
-        }
-      } else {
-        tempStatusData.push(element(i));
-      }
-    }
-    rowData.push(tempStatusData);
-  }
-
-  // height 길이 조절하는 부분
-  const heightArr0 = [];
-  const heightArr1 = [];
-
-  for (let i = 0; i < studentList.length; i += 1) {
-    for (let j = 0; j < 2; j += 1) {
-      heightArr0.push(15); // 학과 높이
-      heightArr0.push(35); // 이름(학번) 높이
-    }
-    heightArr1.push(50); // 기본 높이
-  }
-
-  const table = {
-    tableHead: ['학과/이름(학번)', '출결', ''], // 0번째 row
-    tableTitle: titleData, // 학과/이름(학번)
-    tableData: rowData, // 출결과 버튼
-  };
 
   // 정정하기 버튼, 그 버튼을 눌렀을 때
   const element = (seq) => (
@@ -247,6 +164,118 @@ const List = ({navigation, route}) => {
     </>
   );
 
+  //출결정보를 수정할 때 백엔드에 보낼 데이터 수정
+  function setStatus(seq, bool) {
+    var arrayCopy = [...studentList];
+    bool ? (arrayCopy[seq].status = 1) : (arrayCopy[seq].status = 0);
+    setStudentList(arrayCopy);
+  }
+
+  // 출석, 결석, 지각 인원 체크
+  function count() {
+    var countArr = [0, 0, 0];
+    table.tableData.map((data, i) => {
+      data[0] === '결석'
+        ? (countArr[0] += 1)
+        : data[0] === '출석'
+        ? (countArr[1] += 1)
+        : (countArr[2] += 1);
+    });
+
+    Alert.alert(
+      '저장완료',
+      '총원: ' +
+        table.tableData.length +
+        '\n출석: ' +
+        countArr[1] +
+        ' 결석: ' +
+        countArr[0] +
+        ' 지각: ' +
+        countArr[2],
+    );
+  }
+
+  async function attUpdate(data) {
+    let api = await Api();
+    api
+      .patch(info.apiList.attUpdate, data)
+      .then((res) => {
+        console.log('att update\n');
+        console.log(res.status);
+      })
+      .catch((error) => {
+        //에러 처리, 토큰 재발급을 위해 error, function을 넘겨줌
+        ErrorHandler(error, attUpdate);
+      });
+  }
+
+  async function saveChanges() {
+    let changes = [];
+    for (let i = 0; i < studentList.length; i += 1) {
+      let change = {
+        attendanceId: `${studentList[i].atdId}`,
+        status: `${studentList[i].status}`,
+      };
+      changes.push(change);
+    }
+    await attUpdate(changes);
+    count();
+  }
+
+  const titleData = [];
+  const rowData = [];
+  for (let i = 0; i < studentList.length; i += 1) {
+    const tempStatusData = [];
+
+    for (let j = 0; j < 3; j += 1) {
+      if (j === 0) {
+        titleData.push(
+          studentList[i].user.departmentId.departmentName +
+            '\n' +
+            studentList[i].user.userName +
+            '(' +
+            studentList[i].user.userId +
+            ')',
+        );
+      } else if (j === 1) {
+        switch (studentList[i].status) {
+          case 0:
+            tempStatusData.push('결석');
+            break;
+          case 1:
+            tempStatusData.push('출석');
+            break;
+          case 2:
+            tempStatusData.push('지각');
+            break;
+          default:
+            tempStatusData.push('');
+        }
+      } else {
+        tempStatusData.push(element(i));
+      }
+    }
+    rowData.push(tempStatusData);
+  }
+
+  // height 길이 조절하는 부분
+  const heightArr0 = [];
+  const heightArr1 = [];
+
+  for (let i = 0; i < studentList.length; i += 1) {
+    for (let j = 0; j < 2; j += 1) {
+      heightArr0.push(15); // 학과 높이
+      heightArr0.push(35); // 이름(학번) 높이
+    }
+    heightArr1.push(50); // 기본 높이
+  }
+
+  const table = {
+    tableHead: ['학과/이름(학번)', '출결', ''], // 0번째 row
+    tableTitle: titleData, // 학과/이름(학번)
+    tableData: rowData, // 출결과 버튼
+  };
+
   return (
     <>
       <Container>
@@ -312,7 +341,7 @@ const List = ({navigation, route}) => {
         title="완료하기"
         style={{backgroundColor: Colors.activeGreen}}
         onPress={() => {
-          count();
+          saveChanges();
         }}
       />
     </>
