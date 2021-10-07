@@ -79,7 +79,7 @@ const AttendanceUser = ({navigation, route}) => {
     } else {
       attByClass();
     }
-    console.log(route.params.item);
+    console.log(route.params.userList);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 정정하기 버튼, 그 버튼을 눌렀을 때
