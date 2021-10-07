@@ -83,91 +83,15 @@ const List = ({navigation, route}) => {
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // 정정하기 버튼, 그 버튼을 눌렀을 때
-  const element = (value) => (
-    <>
-      <TouchableOpacity
-        onPress={() =>
-          Alert.alert(
-            '정정하기',
-            table.tableTitle[value] + '\n\n[' + table.tableData[value][0] + ']',
-            table.tableData[value][0] === '결석'
-              ? [
-                  {
-                    text: '지각으로 변경',
-                    onPress: () => {
-                      table.tableData[value][0] = '지각';
-                      Alert.alert('지각 처리 완료');
-                    },
-                    style: 'cancel', // ios only
-                  },
-                  {
-                    text: '출석으로 변경',
-                    onPress: () => {
-                      table.tableData[value][0] = '출석';
-
-                      var arrayCopy = [...studentList];
-                      arrayCopy[value].status = 1;
-                      setStudentList(arrayCopy);
-
-                      Alert.alert('출석 처리 완료');
-                    },
-                    style: 'cancel', // ios only
-                  },
-                ]
-              : table.tableData[value][0] === '출석'
-              ? [
-                  {
-                    text: '지각으로 변경',
-                    onPress: () => {
-                      table.tableData[value][0] = '지각';
-                      Alert.alert('지각 처리 완료');
-                    },
-                    style: 'cancel',
-                  },
-                  {
-                    text: '결석으로 변경',
-                    onPress: () => {
-                      table.tableData[value][0] = '결석';
-
-                      var arrayCopy = [...studentList];
-                      arrayCopy[value].status = 0;
-                      setStudentList(arrayCopy);
-
-                      Alert.alert('결석 처리 완료');
-                    },
-                    style: 'cancel',
-                  },
-                ]
-              : [
-                  {
-                    text: '결석으로 변경',
-                    onPress: () => {
-                      table.tableData[value][0] = '결석';
-                      Alert.alert('결석 처리 완료');
-                    },
-                    style: 'cancel',
-                  },
-                  {
-                    text: '출석으로 변경',
-                    onPress: () => {
-                      table.tableData[value][0] = '출석';
-                      Alert.alert('출석 처리 완료');
-                    },
-                    style: 'cancel',
-                  },
-                ],
-          )
-        }>
-        <View style={styles.btn}>
-          <Text style={styles.btnText}>정정하기</Text>
-        </View>
-      </TouchableOpacity>
-    </>
-  );
+  //출결정보를 수정할 때 백엔드에 보낼 데이터 수정
+  function setStatus(seq, bool) {
+    var arrayCopy = [...studentList];
+    bool ? (arrayCopy[seq].status = 1) : (arrayCopy[seq].status = 0);
+    setStudentList(arrayCopy);
+  }
 
   // 출석, 결석, 지각 인원 체크
-  function Count() {
+  function count() {
     var countArr = [0, 0, 0];
     table.tableData.map((data, i) => {
       data[0] === '결석'
@@ -244,6 +168,85 @@ const List = ({navigation, route}) => {
     tableData: rowData, // 출결과 버튼
   };
 
+  // 정정하기 버튼, 그 버튼을 눌렀을 때
+  const element = (seq) => (
+    <>
+      <TouchableOpacity
+        onPress={() =>
+          Alert.alert(
+            '정정하기',
+            table.tableTitle[seq] + '\n\n[' + table.tableData[seq][0] + ']',
+            table.tableData[seq][0] === '결석'
+              ? [
+                  {
+                    text: '지각으로 변경',
+                    onPress: () => {
+                      table.tableData[seq][0] = '지각';
+                      setStatus(seq, false);
+                      Alert.alert('지각 처리 완료');
+                    },
+                    style: 'cancel', // ios only
+                  },
+                  {
+                    text: '출석으로 변경',
+                    onPress: () => {
+                      table.tableData[seq][0] = '출석';
+                      setStatus(seq, true);
+                      Alert.alert('출석 처리 완료');
+                    },
+                    style: 'cancel', // ios only
+                  },
+                ]
+              : table.tableData[seq][0] === '출석'
+              ? [
+                  {
+                    text: '지각으로 변경',
+                    onPress: () => {
+                      table.tableData[seq][0] = '지각';
+                      setStatus(seq, false);
+                      Alert.alert('지각 처리 완료');
+                    },
+                    style: 'cancel',
+                  },
+                  {
+                    text: '결석으로 변경',
+                    onPress: () => {
+                      table.tableData[seq][0] = '결석';
+                      setStatus(seq, false);
+                      Alert.alert('결석 처리 완료');
+                    },
+                    style: 'cancel',
+                  },
+                ]
+              : [
+                  {
+                    text: '결석으로 변경',
+                    onPress: () => {
+                      table.tableData[seq][0] = '결석';
+                      setStatus(seq, false);
+                      Alert.alert('결석 처리 완료');
+                    },
+                    style: 'cancel',
+                  },
+                  {
+                    text: '출석으로 변경',
+                    onPress: () => {
+                      table.tableData[seq][0] = '출석';
+                      setStatus(seq, true);
+                      Alert.alert('출석 처리 완료');
+                    },
+                    style: 'cancel',
+                  },
+                ],
+          )
+        }>
+        <View style={styles.btn}>
+          <Text style={styles.btnText}>정정하기</Text>
+        </View>
+      </TouchableOpacity>
+    </>
+  );
+
   return (
     <>
       <Container>
@@ -285,10 +288,7 @@ const List = ({navigation, route}) => {
                   style={styles.title}
                   heightArr={heightArr1}
                   width={width / 2}
-                  textStyle={
-                    // 수정해야할 부분 (학과/이름(학번) style)
-                    styles.infoText
-                  }
+                  textStyle={styles.infoText}
                 />
                 <Table>
                   {table.tableData.map((data, index) => (
@@ -312,7 +312,7 @@ const List = ({navigation, route}) => {
         title="완료하기"
         style={{backgroundColor: Colors.activeGreen}}
         onPress={() => {
-          Count();
+          count();
         }}
       />
     </>
