@@ -81,13 +81,26 @@ const AttendanceWeek = ({navigation, route}) => {
   // 정정하기 버튼, 그 버튼을 눌렀을 때
   const element = (seq) => (
     <>
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity
+        onPress={() => {
+          toList(seq);
+        }}>
         <View style={styles.btn}>
           <Text style={styles.btnText}>상세</Text>
         </View>
       </TouchableOpacity>
     </>
   );
+
+  function toList(seq) {
+    //header에 title을 표시하기 위한 item
+    let item = {
+      courses: {
+        courseName: `${classDetailList[seq][0].corClass.course.courseName}`,
+      },
+    };
+    navigation.navigate('List', {item, studentList: classDetailList[seq]});
+  }
 
   const rowData1 = [];
   const rowData2 = [];
