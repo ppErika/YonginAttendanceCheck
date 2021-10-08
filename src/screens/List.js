@@ -83,7 +83,9 @@ const List = ({navigation, route}) => {
     if (route.params.studentList) {
       setStudentList(route.params.studentList);
     } else {
-      attByClass();
+      //console.log(route.params.item.courses.courseId);
+      createClass(route.params.item.courses.courseId);
+      //attByClass();
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -165,6 +167,22 @@ const List = ({navigation, route}) => {
       </TouchableOpacity>
     </>
   );
+
+  async function createClass(courseId) {
+    let data = {
+      courseId: courseId,
+    };
+    let api = await Api();
+    api
+      .post(info.apiList.createClass, data)
+      .then((res) => {
+        setStudentList(res.data.attendances);
+      })
+      .catch((error) => {
+        //에러 처리, 토큰 재발급을 위해 error, function을 넘겨줌
+        ErrorHandler(error, createClass(courseId));
+      });
+  }
 
   async function attByClass() {
     let api = await Api();
