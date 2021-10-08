@@ -162,11 +162,36 @@ const AttendanceUserDetail = ({navigation, route}) => {
   );
 
   function setStatus(seq1, bool) {
+    console.log(sortedList[seq1][seq].attendance.atdId);
+
     var arrayCopy = [...sortedList];
-    bool
-      ? (arrayCopy[seq1][seq].status = '1')
-      : (arrayCopy[seq1][seq].status = '0');
+    if (bool) {
+      attUpdate(sortedList[seq1][seq].attendance.atdId, '1');
+      arrayCopy[seq1][seq].status = '1';
+    } else {
+      attUpdate(sortedList[seq1][seq].attendance.atdId, '0');
+      arrayCopy[seq1][seq].status = '0';
+    }
     setSortedList(arrayCopy);
+  }
+
+  async function attUpdate(atdId, status) {
+    let data = [
+      {
+        attendanceId: atdId,
+        status: status,
+      },
+    ];
+    let api = await Api();
+    api
+      .patch(info.apiList.attUpdate, data)
+      .then((res) => {
+        console.log(res.status);
+      })
+      .catch((error) => {
+        //에러 처리, 토큰 재발급을 위해 error, function을 넘겨줌
+        ErrorHandler(error, attUpdate(atdId, status));
+      });
   }
 
   const rowData1 = [];
