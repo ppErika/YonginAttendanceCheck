@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 const AttendanceUserDetail = ({navigation, route}) => {
   const width = useWindowDimensions().width;
   const height = useWindowDimensions().height;
-  const sortedList = route.params.sortedList;
+  const [sortedList, setSortedList] = useState(route.params.sortedList);
   const userNum = route.params.userNum;
   const classNum = route.params.classNum;
   const seq = route.params.seq;
@@ -96,7 +96,7 @@ const AttendanceUserDetail = ({navigation, route}) => {
                     text: '지각으로 변경',
                     onPress: () => {
                       table.tableData2[seq][0] = '지각';
-                      //setStatus(seq, false);
+                      setStatus(seq, false);
                       Alert.alert('지각 처리 완료');
                     },
                     style: 'cancel', // ios only
@@ -105,7 +105,7 @@ const AttendanceUserDetail = ({navigation, route}) => {
                     text: '출석으로 변경',
                     onPress: () => {
                       table.tableData2[seq][0] = '출석';
-                      //setStatus(seq, true);
+                      setStatus(seq, true);
                       Alert.alert('출석 처리 완료');
                     },
                     style: 'cancel', // ios only
@@ -117,7 +117,7 @@ const AttendanceUserDetail = ({navigation, route}) => {
                     text: '지각으로 변경',
                     onPress: () => {
                       table.tableData2[seq][0] = '지각';
-                      //setStatus(seq, false);
+                      setStatus(seq, false);
                       Alert.alert('지각 처리 완료');
                     },
                     style: 'cancel',
@@ -126,7 +126,7 @@ const AttendanceUserDetail = ({navigation, route}) => {
                     text: '결석으로 변경',
                     onPress: () => {
                       table.tableData2[seq][0] = '결석';
-                      //setStatus(seq, false);
+                      setStatus(seq, false);
                       Alert.alert('결석 처리 완료');
                     },
                     style: 'cancel',
@@ -137,7 +137,7 @@ const AttendanceUserDetail = ({navigation, route}) => {
                     text: '결석으로 변경',
                     onPress: () => {
                       table.tableData2[seq][0] = '결석';
-                      //setStatus(seq, false);
+                      setStatus(seq, false);
                       Alert.alert('결석 처리 완료');
                     },
                     style: 'cancel',
@@ -146,7 +146,7 @@ const AttendanceUserDetail = ({navigation, route}) => {
                     text: '출석으로 변경',
                     onPress: () => {
                       table.tableData2[seq][0] = '출석';
-                      //setStatus(seq, true);
+                      setStatus(seq, true);
                       Alert.alert('출석 처리 완료');
                     },
                     style: 'cancel',
@@ -161,12 +161,20 @@ const AttendanceUserDetail = ({navigation, route}) => {
     </>
   );
 
+  function setStatus(seq1, bool) {
+    var arrayCopy = [...sortedList];
+    bool
+      ? (arrayCopy[seq1][seq].status = '1')
+      : (arrayCopy[seq1][seq].status = '0');
+    setSortedList(arrayCopy);
+  }
+
   const rowData1 = [];
   const rowData2 = [];
   for (let i = 0; i < classNum; i += 1) {
     let tempData1 = [];
     let tempData2 = [];
-    console.log(sortedList[i][seq]);
+    //console.log(sortedList[i][seq]);
     tempData1.push(sortedList[i][seq].attendance.corClass.week + '주차');
     tempData1.push(sortedList[i][seq].attendance.corClass.round + '차시');
 
