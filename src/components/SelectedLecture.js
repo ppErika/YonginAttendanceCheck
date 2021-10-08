@@ -137,14 +137,31 @@ const SelectedLecture = ({navigation, item, onPress}) => {
     if (userList.length !== 0 && classList.length !== 0) {
       //console.log(userList);
       //console.log(classList.length);
+      let arr = create2DArray(classList.length, classDetailList[0].length);
+      let seq = 0;
+      for (let i = 0; i < classList.length; i++) {
+        for (let j = 0; j < classDetailList[0].length; j++) {
+          arr[i][j] = userList[seq++];
+        }
+      }
+
       navigation.navigate('AttendanceUser', {
         userList,
         classNum: classList.length,
         userNum: classDetailList[0].length,
+        sortedList: arr,
       });
     } else {
       Alert.alert('데이터를 불러오는 중입니다.');
     }
+  }
+
+  function create2DArray(rows, columns) {
+    var arr = new Array(rows);
+    for (var i = 0; i < rows; i++) {
+      arr[i] = new Array(columns);
+    }
+    return arr;
   }
 
   return (
