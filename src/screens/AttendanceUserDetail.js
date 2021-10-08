@@ -69,60 +69,58 @@ const styles = StyleSheet.create({
 const AttendanceUserDetail = ({navigation, route}) => {
   const width = useWindowDimensions().width;
   const height = useWindowDimensions().height;
-  const [studentList, setStudentList] = useState([]);
   const sortedList = route.params.sortedList;
   const userNum = route.params.userNum;
   const classNum = route.params.classNum;
   const seq = route.params.seq;
-
-  //컴포넌트를 처음 로딩할 때 호출
-  useEffect(() => {
-    //파라미터로 studentList를 받아올 때와 아닐 때 구분
-    if (route.params.studentList) {
-      setStudentList(route.params.studentList);
-    } else {
-      attByClass();
-    }
-    console.log(sortedList[0][seq].attendance.user.userName);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 정정하기 버튼, 그 버튼을 눌렀을 때
   const element = (seq) => (
     <>
       <TouchableOpacity onPress={() => {}}>
         <View style={styles.btn}>
-          <Text style={styles.btnText}>상세</Text>
+          <Text style={styles.btnText}>정정</Text>
         </View>
       </TouchableOpacity>
     </>
   );
 
-  async function attByClass() {
-    let api = await Api();
-    api
-      .get(info.apiList.attByClass + '/207')
-      .then((res) => {
-        setStudentList(res.data);
-      })
-      .catch((error) => {
-        //에러 처리, 토큰 재발급을 위해 error, function을 넘겨줌
-        ErrorHandler(error, attByClass);
-      });
-  }
-
   const rowData1 = [];
   const rowData2 = [];
-  for (let i = 0; i < studentList.length; i += 1) {
+  for (let i = 0; i < classNum; i += 1) {
     let tempData1 = [];
     let tempData2 = [];
+    console.log(sortedList[i][seq]);
+    tempData1.push(sortedList[i][seq].attendance.corClass.week + '주차');
+    tempData1.push(sortedList[i][seq].attendance.corClass.round + '차시');
 
-    tempData1.push('0');
-    tempData1.push('0');
-    tempData1.push('0');
-    tempData1.push('0');
-    tempData1.push('0');
+    var week = ['일', '월', '화', '수', '목', '금', '토'];
+    var dayOfWeek =
+      week[
+        new Date(
+          sortedList[i][seq].attendance.corClass.sessionDate.substring(0, 10),
+        ).getDay()
+      ];
+    tempData1.push(
+      sortedList[i][seq].attendance.corClass.sessionDate.substring(0, 10) +
+        '(' +
+        dayOfWeek +
+        ')',
+    );
 
-    tempData2.push('0');
+    switch (sortedList[i][seq].status) {
+      case '0':
+        tempData2.push('결석');
+        break;
+      case '1':
+        tempData2.push('출석');
+        break;
+      case '2':
+        tempData2.push('지각');
+        break;
+      default:
+        tempData2.push('');
+    }
     tempData2.push(element(i));
 
     rowData1.push(tempData1);
@@ -132,12 +130,12 @@ const AttendanceUserDetail = ({navigation, route}) => {
   // height 길이 조절하는 부분
   const heightArr = [];
 
-  for (let i = 0; i < studentList.length; i += 1) {
+  for (let i = 0; i < classNum; i += 1) {
     heightArr.push(50); // 기본 높이
   }
 
   const table = {
-    tableHead: ['주차', '차시', '총원', '출석', '지각', '결석', ''],
+    tableHead: ['주차', '차시', '강의 일자(요일)', '출결', ''],
     tableData1: rowData1,
     tableData2: rowData2,
   };
@@ -154,13 +152,11 @@ const AttendanceUserDetail = ({navigation, route}) => {
             <Row
               data={table.tableHead}
               widthArr={[
-                width / 7,
-                width / 7,
-                width / 7,
-                width / 7,
-                width / 7,
-                width / 7,
-                width / 7,
+                (width * 3) / 21,
+                (width * 3) / 21,
+                (width * 8) / 21,
+                (width * 3) / 21,
+                (width * 4) / 21,
               ]}
               style={styles.head}
               textStyle={styles.text}
@@ -179,16 +175,12 @@ const AttendanceUserDetail = ({navigation, route}) => {
                       key={index}
                       data={data}
                       widthArr={[
-                        width / 7,
-                        width / 7,
-                        width / 7,
-                        width / 7,
-                        width / 7,
+                        (width * 3) / 21,
+                        (width * 3) / 21,
+                        (width * 8) / 21,
                       ]}
                       style={styles.row}
-                      textStyle={
-                        data[0] === '결석' ? styles.absentText : styles.text
-                      }
+                      textStyle={styles.text}
                     />
                   ))}
                 </Table>
@@ -197,7 +189,7 @@ const AttendanceUserDetail = ({navigation, route}) => {
                     <Row
                       key={index}
                       data={data}
-                      widthArr={[width / 7, width / 7]}
+                      widthArr={[(width * 3) / 21, (width * 4) / 21]}
                       style={styles.row}
                       textStyle={
                         data[0] === '결석' ? styles.absentText : styles.text
