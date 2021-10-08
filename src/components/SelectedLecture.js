@@ -134,9 +134,14 @@ const SelectedLecture = ({navigation, item, onPress}) => {
 
   async function attToUser() {
     //주차별 출석 현황 데이터 로딩이 끝나지 않은 상태라면 Alert창을 띄움
-    if (userList.length !== 0) {
+    if (userList.length !== 0 && classList.length !== 0) {
       //console.log(userList);
-      navigation.navigate('AttendanceUser', {userList});
+      //console.log(classList.length);
+      navigation.navigate('AttendanceUser', {
+        userList,
+        classNum: classList.length,
+        userNum: classDetailList[0].length,
+      });
     } else {
       Alert.alert('데이터를 불러오는 중입니다.');
     }

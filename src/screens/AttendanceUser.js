@@ -70,6 +70,10 @@ const AttendanceUser = ({navigation, route}) => {
   const width = useWindowDimensions().width;
   const height = useWindowDimensions().height;
   const [studentList, setStudentList] = useState([]);
+  const userList = route.params.userList;
+  const userNum = route.params.userNum;
+  const classNum = route.params.classNum;
+  let sortedList = [];
 
   //컴포넌트를 처음 로딩할 때 호출
   useEffect(() => {
@@ -79,8 +83,32 @@ const AttendanceUser = ({navigation, route}) => {
     } else {
       attByClass();
     }
-    console.log(route.params.userList);
+    //console.log(userList);
+    //console.log(userNum);
+    //console.log(classNum);
+    sort();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  function sort() {
+    let arr = create2DArray(classNum, userNum);
+    let seq = 0;
+    for (let i = 0; i < classNum; i++) {
+      for (let j = 0; j < userNum; j++) {
+        //console.log(seq);
+        //console.log(userList[seq++]);
+        arr[i][j] = userList[seq++];
+      }
+    }
+    sortedList = arr;
+  }
+
+  function create2DArray(rows, columns) {
+    var arr = new Array(rows);
+    for (var i = 0; i < rows; i++) {
+      arr[i] = new Array(columns);
+    }
+    return arr;
+  }
 
   // 정정하기 버튼, 그 버튼을 눌렀을 때
   const element = (seq) => (
