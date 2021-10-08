@@ -74,19 +74,25 @@ const AttendanceUser = ({navigation, route}) => {
   const classNum = route.params.classNum;
   const sortedList = route.params.sortedList;
 
-  //컴포넌트를 처음 로딩할 때 호출
-  useEffect(() => {}, []); // eslint-disable-line react-hooks/exhaustive-deps
-
   // 정정하기 버튼, 그 버튼을 눌렀을 때
   const element = (seq) => (
     <>
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity onPress={() => toUserDetail(seq)}>
         <View style={styles.btn}>
           <Text style={styles.btnText}>상세</Text>
         </View>
       </TouchableOpacity>
     </>
   );
+
+  function toUserDetail(seq) {
+    navigation.navigate('AttendanceUserDetail', {
+      sortedList,
+      userNum,
+      classNum,
+      seq,
+    });
+  }
 
   const rowData1 = [];
   const rowData2 = [];

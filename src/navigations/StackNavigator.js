@@ -196,7 +196,14 @@ const StackNavigator = () => {
             shadowOpacity: 0,
           },
           headerTitleAlign: 'center',
-          headerTitle: () => <Header title="학생 이름 출석 현황" />,
+          headerTitle: () => (
+            <Header
+              title={
+                route.params.sortedList[0][route.params.seq].attendance.user
+                  .userName + ' 출석 현황'
+              }
+            />
+          ),
           headerRight: () => (
             <Icon
               name="menu"

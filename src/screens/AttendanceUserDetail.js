@@ -70,6 +70,10 @@ const AttendanceUserDetail = ({navigation, route}) => {
   const width = useWindowDimensions().width;
   const height = useWindowDimensions().height;
   const [studentList, setStudentList] = useState([]);
+  const sortedList = route.params.sortedList;
+  const userNum = route.params.userNum;
+  const classNum = route.params.classNum;
+  const seq = route.params.seq;
 
   //컴포넌트를 처음 로딩할 때 호출
   useEffect(() => {
@@ -79,7 +83,7 @@ const AttendanceUserDetail = ({navigation, route}) => {
     } else {
       attByClass();
     }
-    console.log(route.params.item);
+    console.log(sortedList[0][seq].attendance.user.userName);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 정정하기 버튼, 그 버튼을 눌렀을 때
