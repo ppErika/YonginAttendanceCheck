@@ -162,7 +162,7 @@ const AttendanceUserDetail = ({navigation, route}) => {
   );
 
   function setStatus(seq1, bool) {
-    console.log(sortedList[seq1][seq].attendance.atdId);
+    //console.log(sortedList[seq1][seq].attendance.atdId);
 
     var arrayCopy = [...sortedList];
     if (bool) {

@@ -76,22 +76,25 @@ const CheckOneByOne = ({navigation, route}) => {
     setStudentList(arrayCopy);
   }
 
-  async function attByClass() {
+  async function createClass(courseId) {
+    let data = {
+      courseId: courseId,
+    };
     let api = await Api();
     api
-      .get(info.apiList.attByClass + '/207')
+      .post(info.apiList.createClass, data)
       .then((res) => {
-        setStudentList(res.data);
-        setQuota(res.data.length);
+        setStudentList(res.data.attendances);
+        setQuota(res.data.attendances.length);
       })
       .catch((error) => {
         //에러 처리, 토큰 재발급을 위해 error, function을 넘겨줌
-        ErrorHandler(error, attByClass);
+        ErrorHandler(error, createClass(courseId));
       });
   }
 
   useEffect(() => {
-    attByClass();
+    createClass(route.params.item.courses.courseId);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
