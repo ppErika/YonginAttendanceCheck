@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
+  Alert,
   StyleSheet,
   ScrollView,
   View,
@@ -77,7 +78,82 @@ const AttendanceUserDetail = ({navigation, route}) => {
   // 정정하기 버튼, 그 버튼을 눌렀을 때
   const element = (seq) => (
     <>
-      <TouchableOpacity onPress={() => {}}>
+      <TouchableOpacity
+        onPress={() =>
+          Alert.alert(
+            '정정하기',
+            table.tableData1[seq][0] +
+              ' ' +
+              table.tableData1[seq][1] +
+              ' ' +
+              table.tableData1[seq][2] +
+              '\n\n[' +
+              table.tableData2[seq][0] +
+              ']',
+            table.tableData2[seq][0] === '결석'
+              ? [
+                  {
+                    text: '지각으로 변경',
+                    onPress: () => {
+                      table.tableData2[seq][0] = '지각';
+                      //setStatus(seq, false);
+                      Alert.alert('지각 처리 완료');
+                    },
+                    style: 'cancel', // ios only
+                  },
+                  {
+                    text: '출석으로 변경',
+                    onPress: () => {
+                      table.tableData2[seq][0] = '출석';
+                      //setStatus(seq, true);
+                      Alert.alert('출석 처리 완료');
+                    },
+                    style: 'cancel', // ios only
+                  },
+                ]
+              : table.tableData2[seq][0] === '출석'
+              ? [
+                  {
+                    text: '지각으로 변경',
+                    onPress: () => {
+                      table.tableData2[seq][0] = '지각';
+                      //setStatus(seq, false);
+                      Alert.alert('지각 처리 완료');
+                    },
+                    style: 'cancel',
+                  },
+                  {
+                    text: '결석으로 변경',
+                    onPress: () => {
+                      table.tableData2[seq][0] = '결석';
+                      //setStatus(seq, false);
+                      Alert.alert('결석 처리 완료');
+                    },
+                    style: 'cancel',
+                  },
+                ]
+              : [
+                  {
+                    text: '결석으로 변경',
+                    onPress: () => {
+                      table.tableData2[seq][0] = '결석';
+                      //setStatus(seq, false);
+                      Alert.alert('결석 처리 완료');
+                    },
+                    style: 'cancel',
+                  },
+                  {
+                    text: '출석으로 변경',
+                    onPress: () => {
+                      table.tableData2[seq][0] = '출석';
+                      //setStatus(seq, true);
+                      Alert.alert('출석 처리 완료');
+                    },
+                    style: 'cancel',
+                  },
+                ],
+          )
+        }>
         <View style={styles.btn}>
           <Text style={styles.btnText}>정정</Text>
         </View>
