@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
 const AttendanceUser = ({navigation, route}) => {
   const width = useWindowDimensions().width;
   const height = useWindowDimensions().height;
-  const [studentList, setStudentList] = useState([]);
   const userList = route.params.userList;
   const userNum = route.params.userNum;
   const classNum = route.params.classNum;
@@ -77,17 +76,19 @@ const AttendanceUser = ({navigation, route}) => {
 
   //컴포넌트를 처음 로딩할 때 호출
   useEffect(() => {
-    //파라미터로 studentList를 받아올 때와 아닐 때 구분
-    if (route.params.studentList) {
-      setStudentList(route.params.studentList);
-    } else {
-      attByClass();
-    }
-    //console.log(userList);
-    //console.log(userNum);
-    //console.log(classNum);
     sort();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // 정정하기 버튼, 그 버튼을 눌렀을 때
+  const element = (seq) => (
+    <>
+      <TouchableOpacity onPress={() => {}}>
+        <View style={styles.btn}>
+          <Text style={styles.btnText}>상세</Text>
+        </View>
+      </TouchableOpacity>
+    </>
+  );
 
   function sort() {
     let arr = create2DArray(classNum, userNum);
@@ -110,38 +111,12 @@ const AttendanceUser = ({navigation, route}) => {
     return arr;
   }
 
-  // 정정하기 버튼, 그 버튼을 눌렀을 때
-  const element = (seq) => (
-    <>
-      <TouchableOpacity onPress={() => {}}>
-        <View style={styles.btn}>
-          <Text style={styles.btnText}>상세</Text>
-        </View>
-      </TouchableOpacity>
-    </>
-  );
-
-  async function attByClass() {
-    let api = await Api();
-    api
-      .get(info.apiList.attByClass + '/207')
-      .then((res) => {
-        setStudentList(res.data);
-      })
-      .catch((error) => {
-        //에러 처리, 토큰 재발급을 위해 error, function을 넘겨줌
-        ErrorHandler(error, attByClass);
-      });
-  }
-
   const rowData1 = [];
   const rowData2 = [];
-  for (let i = 0; i < studentList.length; i += 1) {
+  for (let i = 0; i < userNum; i += 1) {
     let tempData1 = [];
     let tempData2 = [];
 
-    tempData1.push('0');
-    tempData1.push('0');
     tempData1.push('0');
     tempData1.push('0');
     tempData1.push('0');
@@ -156,12 +131,12 @@ const AttendanceUser = ({navigation, route}) => {
   // height 길이 조절하는 부분
   const heightArr = [];
 
-  for (let i = 0; i < studentList.length; i += 1) {
+  for (let i = 0; i < userNum; i += 1) {
     heightArr.push(50); // 기본 높이
   }
 
   const table = {
-    tableHead: ['주차', '차시', '총원', '출석', '지각', '결석', ''],
+    tableHead: ['학과/이름(학번)', '출석', '지각', '결석', ''],
     tableData1: rowData1,
     tableData2: rowData2,
   };
@@ -178,13 +153,11 @@ const AttendanceUser = ({navigation, route}) => {
             <Row
               data={table.tableHead}
               widthArr={[
-                width / 7,
-                width / 7,
-                width / 7,
-                width / 7,
-                width / 7,
-                width / 7,
-                width / 7,
+                (width * 10) / 23,
+                (width * 3) / 23,
+                (width * 3) / 23,
+                (width * 3) / 23,
+                (width * 4) / 23,
               ]}
               style={styles.head}
               textStyle={styles.text}
@@ -203,11 +176,9 @@ const AttendanceUser = ({navigation, route}) => {
                       key={index}
                       data={data}
                       widthArr={[
-                        width / 7,
-                        width / 7,
-                        width / 7,
-                        width / 7,
-                        width / 7,
+                        (width * 10) / 23,
+                        (width * 3) / 23,
+                        (width * 3) / 23,
                       ]}
                       style={styles.row}
                       textStyle={
@@ -221,7 +192,7 @@ const AttendanceUser = ({navigation, route}) => {
                     <Row
                       key={index}
                       data={data}
-                      widthArr={[width / 7, width / 7]}
+                      widthArr={[(width * 3) / 23, (width * 4) / 23]}
                       style={styles.row}
                       textStyle={
                         data[0] === '결석' ? styles.absentText : styles.text
