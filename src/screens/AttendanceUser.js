@@ -72,8 +72,9 @@ const AttendanceUser = ({navigation, route}) => {
   const userList = route.params.userList;
   const userNum = route.params.userNum;
   const classNum = route.params.classNum;
-  let sortedList = [];
-
+  const [sortedList, setSortedList] = useState(
+    create2DArray(classNum, userNum),
+  );
   //컴포넌트를 처음 로딩할 때 호출
   useEffect(() => {
     sort();
@@ -95,12 +96,10 @@ const AttendanceUser = ({navigation, route}) => {
     let seq = 0;
     for (let i = 0; i < classNum; i++) {
       for (let j = 0; j < userNum; j++) {
-        //console.log(seq);
-        //console.log(userList[seq++]);
         arr[i][j] = userList[seq++];
       }
     }
-    sortedList = arr;
+    setSortedList(arr);
   }
 
   function create2DArray(rows, columns) {
@@ -116,13 +115,34 @@ const AttendanceUser = ({navigation, route}) => {
   for (let i = 0; i < userNum; i += 1) {
     let tempData1 = [];
     let tempData2 = [];
-
-    tempData1.push('0');
-    tempData1.push('0');
-    tempData1.push('0');
-
-    tempData2.push('0');
-    tempData2.push(element(i));
+    //if (Object.keys(sortedList).length !== 0) {
+    if (sortedList[0][i]) {
+      let status = [0, 0, 0];
+      for (let j = 0; j < classNum; j++) {
+        //console.log('asd');
+        //console.log(sortedList);
+        if (sortedList[j][i].attendance.status === '0') {
+          status[0]++;
+        } else if (sortedList[j][i].attendance.status === '1') {
+          status[1]++;
+        } else {
+          status[2]++;
+        }
+        //console.log(sortedList[j][i].attendance.user.userId);
+      }
+      tempData1.push(
+        sortedList[0][i].attendance.user.departmentId.departmentName +
+          '\n' +
+          sortedList[0][i].attendance.user.userName +
+          '(' +
+          sortedList[0][i].attendance.user.userId +
+          ')',
+      );
+      tempData1.push(status[1] + '');
+      tempData1.push(status[2] + '');
+      tempData2.push(status[0] + '');
+      tempData2.push(element(i));
+    }
 
     rowData1.push(tempData1);
     rowData2.push(tempData2);
@@ -135,7 +155,7 @@ const AttendanceUser = ({navigation, route}) => {
     heightArr.push(50); // 기본 높이
   }
 
-  const table = {
+  let table = {
     tableHead: ['학과/이름(학번)', '출석', '지각', '결석', ''],
     tableData1: rowData1,
     tableData2: rowData2,
@@ -181,9 +201,7 @@ const AttendanceUser = ({navigation, route}) => {
                         (width * 3) / 23,
                       ]}
                       style={styles.row}
-                      textStyle={
-                        data[0] === '결석' ? styles.absentText : styles.text
-                      }
+                      textStyle={styles.text}
                     />
                   ))}
                 </Table>
@@ -195,7 +213,7 @@ const AttendanceUser = ({navigation, route}) => {
                       widthArr={[(width * 3) / 23, (width * 4) / 23]}
                       style={styles.row}
                       textStyle={
-                        data[0] === '결석' ? styles.absentText : styles.text
+                        data[0] !== '0' ? styles.absentText : styles.text
                       }
                     />
                   ))}
