@@ -32,7 +32,7 @@
 
 ## 개발 도구 및 데이터 흐름
 + 프론트엔드 개발 도구: React-Native
-  - Android와 IOS를 동시에 개발할 수 있다는 점에서 메리트를 느낌
+  - Android와 iOS를 동시에 개발할 수 있다는 점에서 메리트를 느낌
 
 + 데이터 흐름: React-Native ↔ JSON 통신 ↔ Spring Boot ↔ JPA ↔ MySQL
 
