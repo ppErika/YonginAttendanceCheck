@@ -2,7 +2,7 @@
 
 ------------
 
-## 앱 실행
+## 앱 실행 👨‍💻
 ``` Javascript
   npx react-native run-android // android
   npx react-native run-ios // ios
