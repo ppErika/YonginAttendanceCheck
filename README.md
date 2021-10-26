@@ -40,4 +40,4 @@
 ------------
 
 ## 구현화면
-_(추가 예정)_
+![image](https://user-images.githubusercontent.com/40011759/138888156-8c4e9fb9-f0f4-4b36-992d-1a3ef39823a3.png)
