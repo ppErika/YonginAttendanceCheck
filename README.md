@@ -35,6 +35,7 @@
   - Android와 iOS를 동시에 개발할 수 있다는 점에서 메리트를 느낌
 
 + 데이터 흐름: React-Native ↔ JSON 통신 ↔ Spring Boot ↔ JPA ↔ MySQL
++ 백엔드 노트: https://blog.naver.com/hanerika_11/222549265908
 
 ------------
 
