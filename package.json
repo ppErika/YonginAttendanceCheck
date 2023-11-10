@@ -19,7 +19,7 @@
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/stack": "^6.0.7",
     "ansi-regex": "^6.0.1",
-    "axios": "^0.23.0",
+    "axios": "^1.6.0",
     "nth-check": "^2.0.1",
     "react": "17.0.1",
     "react-native": "0.64.1",
